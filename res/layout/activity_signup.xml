@@ -21,7 +21,9 @@
             android:layout_weight="1"
             android:ems="10"
             android:hint="First Name"
-            android:inputType="textPersonName" >
+            android:inputType="textPersonName"
+            android:imeOptions="actionNext"
+            android:nextFocusDown="@+id/etLastName" >
 
             <requestFocus />
         </EditText>
@@ -33,10 +35,12 @@
             android:layout_weight="1"
             android:ems="10"
             android:hint="Last Name"
-            android:inputType="textPersonName" />
+            android:inputType="textPersonName"
+            android:imeOptions="actionNext" />
     </LinearLayout>
 
     <RadioGroup
+        android:id="@+id/rbtngrpGender"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal" >
@@ -74,6 +78,7 @@
             android:ems="10"
             android:hint="Password"
             android:inputType="textPassword" />
+
     </LinearLayout>
 
     <LinearLayout
