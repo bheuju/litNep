@@ -29,7 +29,10 @@ public class MainActivity extends ActionBarActivity implements
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
-
+		
+		
+		
+		
 		// Initializations
 		mViewPager = (ViewPager) findViewById(R.id.pager);
 		actionBar = getSupportActionBar();
