@@ -1,24 +1,44 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/activity_main"
+    android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="#2f2f2f"
+    android:layout_height="match_parent"
     tools:context="com.pike.litnep.MainActivity" >
 
-    <android.support.v4.view.ViewPager
-        android:id="@+id/pager"
+    <!-- Main Content View -->
+
+    <LinearLayout
+        android:id="@+id/activity_main"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" >
-    </android.support.v4.view.ViewPager>
-
-    <Button
-        android:id="@+id/btnHideActionBar"
-        android:layout_width="80dp"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="180dp"
-        android:text="Hide" />
+        android:background="#2f2f2f"
+        android:orientation="vertical" >
 
-</RelativeLayout>
+        <android.support.v4.view.ViewPager
+            android:id="@+id/pager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" >
+        </android.support.v4.view.ViewPager>
+
+        <Button
+            android:id="@+id/btnHideActionBar"
+            android:layout_width="80dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="180dp"
+            android:text="Hide" />
+    </LinearLayout>
+
+    <!-- Navigation Drawer -->
+
+    <ListView
+        android:id="@+id/left_drawer"
+        android:layout_width="240dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        android:background="#444"
+        android:choiceMode="singleChoice"
+        android:divider="@android:color/transparent"
+        android:cacheColorHint="@android:color/transparent"
+        android:dividerHeight="0dp" />
+
+</android.support.v4.widget.DrawerLayout>
