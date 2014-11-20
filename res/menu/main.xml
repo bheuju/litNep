@@ -15,19 +15,19 @@
     <item
         android:id="@+id/action_library"
         android:title="@string/action_library"
-        app:showAsAction="ifRoom|withText"/>
+        app:showAsAction="never"/>
     <item
         android:id="@+id/action_shop"
         android:title="@string/action_shop"
-        app:showAsAction="ifRoom|withText"/>
+        app:showAsAction="never"/>
     <item
         android:id="@+id/action_learn"
         android:title="@string/action_learn"
-        app:showAsAction="ifRoom|withText"/>
+        app:showAsAction="never"/>
     <item
         android:id="@+id/action_search"
         android:title="@string/action_search"
-        app:showAsAction="ifRoom|withText"/>
+        app:showAsAction="never"/>
     <item
         android:id="@+id/action_settings"
         android:orderInCategory="100"

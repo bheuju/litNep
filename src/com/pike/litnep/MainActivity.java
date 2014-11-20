@@ -13,6 +13,7 @@ import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
@@ -22,61 +23,93 @@ import com.pike.litnep.adapter.TabsPagerAdapter;
 public class MainActivity extends ActionBarActivity implements
 		ActionBar.TabListener {
 
+	// actionBar
 	private Button hideActionBar;
-	// private TextView tvStatus;
 	private boolean statusActionBar = false;
 
+	// for fragments
 	private ViewPager mViewPager;
 	private TabsPagerAdapter mAdapter;
 	private ActionBar actionBar;
 
 	// for drawer
-	private String[] mDrawerListTitles;
 	private DrawerLayout mDrawerLayout;
 	private ListView mDrawerList;
 	private ActionBarDrawerToggle mDrawerToggle;
+	private ListView left_drawer;
+	private ArrayAdapter<String> arrayList;
+	private String[] mDrawerListTitles = { "SignIn", "Library", "Settings", "" };
+
+	// if signIn
+	boolean isSignedIn = false;
+	String userName = null;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 
-		mDrawerListTitles = getResources().getStringArray(
-				R.array.drawer_list_titles);
 		mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 		mDrawerList = (ListView) findViewById(R.id.left_drawer);
 		// set the adapter for the list view
-		mDrawerList.setAdapter(new ArrayAdapter<String>(this,
-				R.layout.drawer_list_item, mDrawerListTitles));
+		arrayList = new ArrayAdapter<String>(this, R.layout.drawer_list_item,
+				mDrawerListTitles);
+		mDrawerList.setAdapter(arrayList);
+		// mDrawerListTitles[0] = "Account";
 		// set the list's click listener
-		// TODO: set the list's click listener
 		mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout,
 				R.drawable.ic_drawer, R.string.drawer_open,
 				R.string.drawer_close) {
 			public void onDrawerClosed(View drawerView) {
 				super.onDrawerClosed(drawerView);
 				getSupportActionBar().setTitle("litNep");
+				supportInvalidateOptionsMenu(); // create call to
+												// onPrepareOptionsMenu()
 			};
 
 			public void onDrawerOpened(View drawerView) {
 				super.onDrawerOpened(drawerView);
 				getSupportActionBar().setTitle("litNep");
+				supportInvalidateOptionsMenu(); // create call to
+												// onPrepareOptionsMenu()
+
+				// if signedIn display userName, and signOut
+				if (isSignedIn) {
+					// mDrawerListTitles[0] = userName;
+					replaceString(mDrawerListTitles, 0, userName);
+					mDrawerList.setAdapter(arrayList);
+					arrayList.setNotifyOnChange(true);
+
+				}
 			};
 		};
-		// set the drawer toggle as the drawerlistener
+		// set the drawer toggle as the drawerListener
 		mDrawerLayout.setDrawerListener(mDrawerToggle);
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		getSupportActionBar().setHomeButtonEnabled(true);
-		
+
+		// left_drawer = (ListView) findViewById(R.id.left_drawer);
+		mDrawerList
+				.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+					@Override
+					public void onItemClick(AdapterView<?> parent, View view,
+							int position, long id) {
+						// TODO Auto-generated method stub
+						selectItem(position);
+					}
+				});
+
 		// Initializations
 		mViewPager = (ViewPager) findViewById(R.id.pager);
 		actionBar = getSupportActionBar();
 		mAdapter = new TabsPagerAdapter(getSupportFragmentManager());
 
 		mViewPager.setAdapter(mAdapter);
-		// actionBar.setHomeButtonEnabled(false);
 		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
-
+		// actionBar.setDisplayShowHomeEnabled(false); // to hide the title bar
+		// actionBar.setDisplayShowTitleEnabled(false); // of the action bar and
+		// show only tabs
 		// Set 3 tabs icons and/or titles and setting tabListeners
 		Tab tab1 = actionBar.newTab().setText("Tab1").setTabListener(this);
 		Tab tab2 = actionBar.newTab().setText("Tab2").setTabListener(this);
@@ -140,6 +173,20 @@ public class MainActivity extends ActionBarActivity implements
 
 	}
 
+	/**
+	 * General functions
+	 *******************************/
+	// function to insert string in a array of strings (in a list)
+
+	// function to replace string in a array of strings (in a list)
+	public void replaceString(String[] dest, int pos, String src) {
+		for (int i = 0; i < dest.length; i++) {
+			if (pos == i) {
+				dest[i] = src;
+			}
+		}
+	}
+
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
@@ -176,8 +223,66 @@ public class MainActivity extends ActionBarActivity implements
 	}
 
 	/**
+	 * ActionBar functions
+	 *******************************/
+	private void openCompose() {
+		Intent intent = new Intent(this, ComposeActivity.class);
+		startActivity(intent);
+	}
+
+	private void openSignin() {
+		Intent intent = new Intent(this, SigninActivity.class);
+		startActivity(intent);
+		if (true) /* TODO: If Signed in successfully */
+		{
+			isSignedIn = true; // update the flag
+			userName = "Pike Education"; // update userName: Get the data from
+											// intent
+		}
+	}
+
+	private void openLibrary() {
+		startActivity(new Intent(this, LibraryActivity.class));
+	}
+	
+	
+	private void openSettings() {
+
+	}
+	
+	/**
 	 * Navigation Drawer functions
 	 *******************************/
+	private void selectItem(int position) {
+		// load new activity on basis of position
+		// TODO:
+		switch (position) {
+		case 0:
+			openSignin();
+			break;
+		case 1:
+			openLibrary();
+			break;
+		}
+
+	}
+
+	@Override
+	public boolean onPrepareOptionsMenu(Menu menu) {
+		// TODO Auto-generated method stub
+		// if the nav drawer is open, hide action items related to the content
+		// view
+		boolean drawerOpen = mDrawerLayout.isDrawerOpen(mDrawerList);
+		if (drawerOpen) {
+			menu.findItem(R.id.action_signin).setVisible(false);
+			menu.findItem(R.id.action_compose).setVisible(false);
+			// actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
+		} else {
+			// actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+		}
+		return super.onPrepareOptionsMenu(menu);
+	}
+
 	@Override
 	protected void onPostCreate(Bundle savedInstanceState) {
 		super.onPostCreate(savedInstanceState);
@@ -189,23 +294,6 @@ public class MainActivity extends ActionBarActivity implements
 	public void onConfigurationChanged(Configuration newConfig) {
 		super.onConfigurationChanged(newConfig);
 		mDrawerToggle.onConfigurationChanged(newConfig);
-	}
-
-	/**
-	 * ActionBar functions
-	 *******************************/
-	private void openCompose() {
-		Intent intent = new Intent(this, ComposeActivity.class);
-		startActivity(intent);
-	}
-
-	private void openSignin() {
-		Intent intent = new Intent(this, SigninActivity.class);
-		startActivity(intent);
-	}
-
-	private void openSettings() {
-
 	}
 
 	/**

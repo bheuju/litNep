@@ -16,6 +16,13 @@
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name" >
+
+            <!--
+            android:uiOptions="splitActionBarWhenNarrow" >
+            <meta-data
+                android:name="android.support.UI_OPTIONS"
+                android:value="splitActionBarWhenNarrow" />
+            -->
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -45,6 +52,22 @@
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.pike.litnep.SigninActivity" />
+        </activity>
+        <activity
+            android:name=".LibraryActivity"
+            android:label="@string/title_activity_library" >
+        </activity>
+        <activity
+            android:name=".ReviewsActivity"
+            android:label="@string/title_activity_reviews" >
+        </activity>
+        <activity
+            android:name=".BooksActivity"
+            android:label="@string/title_activity_books" >
+        </activity>
+        <activity
+            android:name=".ShopActivity"
+            android:label="@string/title_activity_shop" >
         </activity>
     </application>
 

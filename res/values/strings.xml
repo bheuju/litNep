@@ -13,14 +13,18 @@
     <string name="hello_world">Hello world!</string>
     <string name="title_activity_signin">Sign In</string>
     <string name="title_activity_signup">Sign Up</string>
+
     <string-array name="drawer_list_titles">
-        <item>Nav1</item>
-        <item>Nav2</item>
-        <item>Nav3</item>
-        <item>Nav4</item>
-        <item>Nav5</item>
+        <item>SignIn</item>
+        <item>Library</item>
+        <item>Settings</item>
     </string-array>
+
     <string name="drawer_open">Open Drawer</string>
     <string name="drawer_close">Close Drawer</string>
+    <string name="title_activity_library">Library</string>
+    <string name="title_activity_reviews">Reviews</string>
+    <string name="title_activity_books">Books</string>
+    <string name="title_activity_shop">Shop</string>
 
 </resources>
