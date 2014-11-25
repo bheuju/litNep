@@ -6,6 +6,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.android.volley.NetworkError;
+import com.android.volley.NoConnectionError;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
@@ -24,7 +26,7 @@ import android.widget.ListView;
 
 public class FragmentTab1 extends Fragment {
 
-	private String url = "http://pike.comlu.com/read.php";
+	private String url = "http://pike.comlu.com/extra/read.php";
 	private static String TAG = MainActivity.class.getSimpleName();
 	private Button btnArrayRequest;
 	// progress dialog
@@ -106,8 +108,7 @@ public class FragmentTab1 extends Fragment {
 							// tvResponse.setText(jsonResponse);
 						} catch (JSONException e) {
 							e.printStackTrace();
-							// GeneralFunctions.getInstance().toast(context,
-							// "Error: " + e.getMessage());
+							GeneralFunctions.getInstance().toast(getActivity(), "Error: " + e.getMessage());
 						}
 						hidepDialog();
 					};
@@ -117,8 +118,10 @@ public class FragmentTab1 extends Fragment {
 					public void onErrorResponse(VolleyError error) {
 						// TODO Auto-generated method stub
 						VolleyLog.d(TAG, "Error: " + error.getMessage());
-						// GeneralFunctions.getInstance().toast(context,
-						// error.getMessage());
+						//GeneralFunctions.getInstance().toast(getActivity(), error.getMessage());
+						if (error instanceof NoConnectionError){
+							GeneralFunctions.getInstance().toast(getActivity(), "No Internet Connection!");
+						}
 						hidepDialog();
 					}
 

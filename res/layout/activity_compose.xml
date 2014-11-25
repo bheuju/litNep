@@ -23,13 +23,14 @@
             android:textSize="18sp" />
 
         <EditText
-            android:id="@+id/etTopic"
+            android:id="@+id/etTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
             android:hint="Topic"
             android:imeOptions="actionNext"
-            android:nextFocusDown="@+id/etContent" >
+            android:nextFocusDown="@+id/etContent"
+            android:inputType="textCapSentences" >
 			
             <requestFocus />
         </EditText>
@@ -41,7 +42,7 @@
             android:ems="10"
             android:gravity="top"
             android:hint="Content"
-            android:inputType="textMultiLine" />
+            android:inputType="textMultiLine|textCapSentences" />
     </LinearLayout>
 
     <LinearLayout

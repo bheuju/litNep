@@ -25,7 +25,7 @@ public class ReviewsActivity extends ActionBarActivity {
 
 	//GeneralFunctions func = new GeneralFunctions(this);
 
-	private String url = "http://pike.comlu.com/read.php";
+	private String url = "http://pike.comlu.com/extra/read.php";
 	private static String TAG = MainActivity.class.getSimpleName();
 
 	private Button btnObjRequest, btnArrayRequest;
