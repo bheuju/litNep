@@ -36,9 +36,8 @@ public class MainActivity extends ActionBarActivity implements
 	private DrawerLayout mDrawerLayout;
 	private ListView mDrawerList;
 	private ActionBarDrawerToggle mDrawerToggle;
-	private ListView left_drawer;
 	private ArrayAdapter<String> arrayList;
-	private String[] mDrawerListTitles = { "SignIn", "Library", "Settings", "" };
+	private String[] mDrawerListTitles = { "SignIn", "Library", "Settings" };
 
 	// if signIn
 	boolean isSignedIn = false;

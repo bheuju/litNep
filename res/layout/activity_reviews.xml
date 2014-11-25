@@ -9,10 +9,34 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.pike.litnep.ReviewsActivity" >
 
-    <TextView
-        android:id="@+id/textView1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="This is Review" />
+    <ScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" >
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center" >
+
+            <Button
+                android:id="@+id/btnObjRequest"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Object Request" />
+
+            <Button
+                android:id="@+id/btnArrRequest"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Array Request" />
+
+            <TextView
+                android:id="@+id/tvResponse"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="This is Review" />
+        </LinearLayout>
+    </ScrollView>
 
 </LinearLayout>
