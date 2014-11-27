@@ -43,6 +43,7 @@
         <activity
             android:name=".SigninActivity"
             android:label="@string/title_activity_signin"
+            android:windowSoftInputMode="stateHidden"
             android:parentActivityName=".MainActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -51,6 +52,7 @@
         <activity
             android:name=".SignupActivity"
             android:label="@string/title_activity_signup"
+            android:windowSoftInputMode="stateHidden"
             android:parentActivityName=".SigninActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

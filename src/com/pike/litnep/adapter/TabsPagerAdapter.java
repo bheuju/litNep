@@ -23,8 +23,8 @@ public class TabsPagerAdapter extends FragmentPagerAdapter {
 			return new FragmentTab1();
 		case 1:
 			return new FragmentTab2();
-		case 2:
-			return new FragmentTab3();
+		//case 2:
+		//	return new FragmentTab3();
 		}
 		return null;
 	}
@@ -32,7 +32,7 @@ public class TabsPagerAdapter extends FragmentPagerAdapter {
 	@Override
 	public int getCount() {
 		// TODO Auto-generated method stub
-		return 3;
+		return 2;
 	}
 
 }

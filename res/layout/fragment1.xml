@@ -3,15 +3,8 @@
     android:id="@+id/parent"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#9c5118"
+    android:background="#f0f0f0"
     android:orientation="vertical" >
-
-    <Button
-        android:id="@+id/btnArrRequest"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:text="Get Data" />
 
     <ListView
         android:id="@+id/listPosts"

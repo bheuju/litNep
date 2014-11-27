@@ -32,46 +32,47 @@ public class FragmentTab1 extends Fragment {
 	// progress dialog
 	private ProgressDialog pDialog;
 	private ListView list;
-	ArrayList<String> mContentsList;
+	private ArrayList<String> mContentsList;
 	ArrayAdapter<String> dataAdapter;
 	// temp string
 	private String jsonResponse;
 
+	private boolean dataReceived = false;
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
-		// TODO Auto-generated method stub
-		// called before onCreateView
 		super.onCreate(savedInstanceState);
-
 	}
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-
 		View v = inflater.inflate(R.layout.fragment1, container, false);
 
 		// GeneralFunctions.getInstance().toast(getActivity(),"Hello Fragment!");
 
 		pDialog = new ProgressDialog(getActivity());
-		pDialog.setMessage("Please wait...");
-		pDialog.setCancelable(false);
+		pDialog.setMessage("Please wait... \nLoading contents");
+		pDialog.setCancelable(true);
 
-		btnArrayRequest = (Button) v.findViewById(R.id.btnArrRequest);
+		// btnArrayRequest = (Button) v.findViewById(R.id.btnArrRequest);
 		list = (ListView) v.findViewById(R.id.listPosts);
-		
-		//create array adapter
-		mContentsList = new ArrayList<String>();
-		dataAdapter = new ArrayAdapter<String>(getActivity(), R.layout.list_contents_main, mContentsList);
-		list.setAdapter(dataAdapter);
-		
-		btnArrayRequest.setOnClickListener(new View.OnClickListener() {
 
-			@Override
-			public void onClick(View v) {
-				jsonArrRequest();
-			}
-		});
+		// if data is not already received then receive data from server
+		if (!dataReceived) {
+			// create array adapter
+			mContentsList = new ArrayList<String>();
+			dataAdapter = new ArrayAdapter<String>(getActivity(),
+					R.layout.list_contents_main, mContentsList);
+			list.setAdapter(dataAdapter);
+
+			// get data from remote server
+			jsonArrRequest();
+			// TODO: save data to local database
+
+		} else {
+			// TODO: load data from local database
+		}
 
 		return v;
 	}
@@ -79,7 +80,6 @@ public class FragmentTab1 extends Fragment {
 	/**
 	 * Methods to make JSON array request
 	 */
-
 	private void jsonArrRequest() {
 		// starts with [
 		showpDialog();
@@ -101,14 +101,21 @@ public class FragmentTab1 extends Fragment {
 								jsonResponse = "";
 								jsonResponse += title + "\n\n";
 								jsonResponse += content;
-								
-								mContentsList.add(jsonResponse);
-								dataAdapter.notifyDataSetChanged();
+
+								// inserts element at last
+								// mContentsList.add(jsonResponse);
+
+								// inserts element at first;
+								// used for displaying latest first
+								mContentsList.add(0, jsonResponse);
 							}
 							// tvResponse.setText(jsonResponse);
+							dataAdapter.notifyDataSetChanged();
+							dataReceived = true;
 						} catch (JSONException e) {
 							e.printStackTrace();
-							GeneralFunctions.getInstance().toast(getActivity(), "Error: " + e.getMessage());
+							GeneralFunctions.getInstance().toast(getActivity(),
+									"Error: " + e.getMessage());
 						}
 						hidepDialog();
 					};
@@ -118,9 +125,11 @@ public class FragmentTab1 extends Fragment {
 					public void onErrorResponse(VolleyError error) {
 						// TODO Auto-generated method stub
 						VolleyLog.d(TAG, "Error: " + error.getMessage());
-						//GeneralFunctions.getInstance().toast(getActivity(), error.getMessage());
-						if (error instanceof NoConnectionError){
-							GeneralFunctions.getInstance().toast(getActivity(), "No Internet Connection!");
+						// GeneralFunctions.getInstance().toast(getActivity(),
+						// error.getMessage());
+						if (error instanceof NoConnectionError) {
+							GeneralFunctions.getInstance().toast(getActivity(),
+									"No Internet Connection!");
 						}
 						hidepDialog();
 					}

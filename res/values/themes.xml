@@ -1,8 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
 
     <style name="CustomActionBarTheme" parent="@style/Theme.AppCompat.Light">
         <item name="windowActionBarOverlay">true</item>
+    </style>
+
+    <style name="CustomTheme" parent="@style/Theme.AppCompat.Light">
+        <item name="android:background">#414347</item>
+        <item name="android:textColor">#FFF</item>
     </style>
 
 </resources>

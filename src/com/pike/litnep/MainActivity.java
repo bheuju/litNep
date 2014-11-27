@@ -78,7 +78,6 @@ public class MainActivity extends ActionBarActivity implements
 					replaceString(mDrawerListTitles, 0, userName);
 					mDrawerList.setAdapter(arrayList);
 					arrayList.setNotifyOnChange(true);
-
 				}
 			};
 		};
@@ -110,14 +109,14 @@ public class MainActivity extends ActionBarActivity implements
 		// actionBar.setDisplayShowTitleEnabled(false); // of the action bar and
 		// show only tabs
 		// Set 3 tabs icons and/or titles and setting tabListeners
-		Tab tab1 = actionBar.newTab().setText("Tab1").setTabListener(this);
-		Tab tab2 = actionBar.newTab().setText("Tab2").setTabListener(this);
-		Tab tab3 = actionBar.newTab().setText("Tab3").setTabListener(this);
+		Tab tab1 = actionBar.newTab().setText("Writings").setTabListener(this);
+		Tab tab2 = actionBar.newTab().setText("Your Writings").setTabListener(this);
+		//Tab tab3 = actionBar.newTab().setText("Tab3").setTabListener(this);
 
 		// Add tabs to actionBar
 		actionBar.addTab(tab1);
 		actionBar.addTab(tab2);
-		actionBar.addTab(tab3);
+		//actionBar.addTab(tab3);
 
 		/**
 		 * Select appropriate tab on swiping
@@ -243,12 +242,11 @@ public class MainActivity extends ActionBarActivity implements
 	private void openLibrary() {
 		startActivity(new Intent(this, LibraryActivity.class));
 	}
-	
-	
+
 	private void openSettings() {
 
 	}
-	
+
 	/**
 	 * Navigation Drawer functions
 	 *******************************/

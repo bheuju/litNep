@@ -12,6 +12,7 @@ import com.android.volley.toolbox.StringRequest;
 
 import android.support.v7.app.ActionBarActivity;
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -36,40 +37,55 @@ public class ComposeActivity extends ActionBarActivity {
 		etTitle = (EditText) findViewById(R.id.etTitle);
 		etContent = (EditText) findViewById(R.id.etContent);
 		btnPost = (Button) findViewById(R.id.btnPost);
-		
+
 		pDialog = new ProgressDialog(this);
 		pDialog.setMessage("Please wait...");
 		pDialog.setCancelable(false);
-		
+
 		btnPost.setOnClickListener(new View.OnClickListener() {
-			
+
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
 				showpDialog();
-				StringRequest req = new StringRequest(Method.POST, url, new Response.Listener<String>() {
+				StringRequest req = new StringRequest(Method.POST, url,
+						new Response.Listener<String>() {
+							@Override
+							public void onResponse(String response) {
+								Log.d("Response: ", response.toString());
+
+								GeneralFunctions.getInstance().toast(
+										getApplicationContext(), "Success");
+
+								// goto mainActvity
+								Intent mainActivity = new Intent(
+										getApplicationContext(),
+										MainActivity.class);
+								// close all views before launching HOME
+								mainActivity
+										.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+								startActivity(mainActivity);
+								// close signinActivity
+								finish();
+
+							}
+						}, new Response.ErrorListener() {
+							@Override
+							public void onErrorResponse(VolleyError error) {
+								GeneralFunctions.getInstance().toast(
+										getApplicationContext(),
+										error.toString());
+							}
+						}) {
 					@Override
-					public void onResponse(String response) {
-						Log.d("Response: ", response.toString());
-						
-						GeneralFunctions.getInstance().toast(getApplicationContext(), "Success");
-						
-					}
-				}, new Response.ErrorListener() {
-					@Override
-					public void onErrorResponse(VolleyError error) {
-						GeneralFunctions.getInstance().toast(getApplicationContext(), error.toString());
-					}
-				}) {
-					@Override
-					protected Map<String, String> getParams(){
+					protected Map<String, String> getParams() {
 						Map<String, String> params = new HashMap<String, String>();
 						params.put("title", etTitle.getText().toString());
 						params.put("content", etContent.getText().toString());
 						return params;
 					}
 				};
-				//add to request queue
+				// add to request queue
 				AppController.getInstance().addToRequestQueue(req);
 				hidepDialog();
 			}
@@ -94,7 +110,7 @@ public class ComposeActivity extends ActionBarActivity {
 		}
 		return super.onOptionsItemSelected(item);
 	}
-	
+
 	private void showpDialog() {
 		if (!pDialog.isShowing())
 			pDialog.show();
