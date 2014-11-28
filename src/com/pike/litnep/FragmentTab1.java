@@ -12,6 +12,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonArrayRequest;
+import com.pike.litnep.app.AppController;
 
 import android.app.ProgressDialog;
 import android.os.Bundle;
@@ -37,7 +38,7 @@ public class FragmentTab1 extends Fragment {
 	// temp string
 	private String jsonResponse;
 
-	private boolean dataReceived = false;
+	private static boolean dataReceived = false;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -69,6 +70,7 @@ public class FragmentTab1 extends Fragment {
 			// get data from remote server
 			jsonArrRequest();
 			// TODO: save data to local database
+			// set dataReceived = true
 
 		} else {
 			// TODO: load data from local database

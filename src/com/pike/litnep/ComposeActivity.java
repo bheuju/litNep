@@ -9,6 +9,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
+import com.pike.litnep.app.AppController;
 
 import android.support.v7.app.ActionBarActivity;
 import android.app.ProgressDialog;
@@ -29,6 +30,8 @@ public class ComposeActivity extends ActionBarActivity {
 	private String url = "http://pike.comlu.com/extra/compose.php";
 	private ProgressDialog pDialog;
 
+	private String title, content;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -46,48 +49,12 @@ public class ComposeActivity extends ActionBarActivity {
 
 			@Override
 			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				showpDialog();
-				StringRequest req = new StringRequest(Method.POST, url,
-						new Response.Listener<String>() {
-							@Override
-							public void onResponse(String response) {
-								Log.d("Response: ", response.toString());
-
-								GeneralFunctions.getInstance().toast(
-										getApplicationContext(), "Success");
-
-								// goto mainActvity
-								Intent mainActivity = new Intent(
-										getApplicationContext(),
-										MainActivity.class);
-								// close all views before launching HOME
-								mainActivity
-										.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-								startActivity(mainActivity);
-								// close signinActivity
-								finish();
-
-							}
-						}, new Response.ErrorListener() {
-							@Override
-							public void onErrorResponse(VolleyError error) {
-								GeneralFunctions.getInstance().toast(
-										getApplicationContext(),
-										error.toString());
-							}
-						}) {
-					@Override
-					protected Map<String, String> getParams() {
-						Map<String, String> params = new HashMap<String, String>();
-						params.put("title", etTitle.getText().toString());
-						params.put("content", etContent.getText().toString());
-						return params;
-					}
-				};
-				// add to request queue
-				AppController.getInstance().addToRequestQueue(req);
-				hidepDialog();
+				// get title and contents
+				title = etTitle.getText().toString();
+				content = etContent.getText().toString();
+				if (validateInput()) {
+					postContents();
+				}
 			}
 		});
 	}
@@ -109,6 +76,63 @@ public class ComposeActivity extends ActionBarActivity {
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
+	}
+
+	/**
+	 * General Functions
+	 */
+
+	public boolean validateInput() {
+		// check empty fields
+		// TODO: check email validation (is valid) or //leave it for now
+		if (!title.equals("") && !content.equals("")) {
+			return true;
+		} else {
+			GeneralFunctions.getInstance().toast(getApplicationContext(),
+					"Empty fields!");
+		}
+		return false;
+	}
+
+	public void postContents() {
+		showpDialog();
+		StringRequest req = new StringRequest(Method.POST, url,
+				new Response.Listener<String>() {
+					@Override
+					public void onResponse(String response) {
+						Log.d("Response: ", response.toString());
+
+						GeneralFunctions.getInstance().toast(
+								getApplicationContext(), "Success");
+
+						// goto mainActvity
+						Intent mainActivity = new Intent(
+								getApplicationContext(), MainActivity.class);
+						// close all views before launching HOME
+						mainActivity.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+						startActivity(mainActivity);
+						// close signinActivity
+						finish();
+						//hidepDialog();
+					}
+				}, new Response.ErrorListener() {
+					@Override
+					public void onErrorResponse(VolleyError error) {
+						GeneralFunctions.getInstance().toast(
+								getApplicationContext(), error.toString());
+						hidepDialog();
+					}
+				}) {
+			@Override
+			protected Map<String, String> getParams() {
+				Map<String, String> params = new HashMap<String, String>();
+				params.put("title", title);
+				params.put("content", content);
+				return params;
+			}
+		};
+		// add to request queue
+		AppController.getInstance().addToRequestQueue(req);
 	}
 
 	private void showpDialog() {

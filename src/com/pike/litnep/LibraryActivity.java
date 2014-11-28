@@ -21,7 +21,7 @@ public class LibraryActivity extends ActionBarActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_library);
 
-		arrayList = new ArrayAdapter<String>(this, R.layout.list_item_general,
+		arrayList = new ArrayAdapter<String>(this, R.layout.list_item_custom,
 				mLibraryListItems);
 		mLibraryList = (ListView) findViewById(R.id.libraryList);
 		mLibraryList.setAdapter(arrayList);
