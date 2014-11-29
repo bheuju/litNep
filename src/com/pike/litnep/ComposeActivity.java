@@ -111,9 +111,9 @@ public class ComposeActivity extends ActionBarActivity {
 						// close all views before launching HOME
 						mainActivity.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 						startActivity(mainActivity);
+						hidepDialog();
 						// close signinActivity
 						finish();
-						//hidepDialog();
 					}
 				}, new Response.ErrorListener() {
 					@Override

@@ -10,6 +10,8 @@ import com.pike.litnep.FragmentTab3;
 
 public class TabsPagerAdapter extends FragmentPagerAdapter {
 
+	
+	
 	public TabsPagerAdapter(FragmentManager fm) {
 		super(fm);
 		// TODO Auto-generated constructor stub
@@ -22,7 +24,9 @@ public class TabsPagerAdapter extends FragmentPagerAdapter {
 		//case 0:
 		//	return new FragmentTab1();
 		case 0:
-			return new FragmentTab2();
+			FragmentTab2 f = new FragmentTab2();
+			f.fragmentId = 0;
+			return f;
 		//case 2:
 		//	return new FragmentTab3();
 		}

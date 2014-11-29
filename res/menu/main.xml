@@ -9,12 +9,25 @@
         android:icon="@drawable/ic_action_new_label"
         app:showAsAction="ifRoom|withText"/>
     <item
+        android:id="@+id/action_refresh"
+        android:title="@string/action_refresh"
+        android:icon="@drawable/ic_action_refresh"
+        app:showAsAction="ifRoom|withText"/>
+    <item
         android:id="@+id/action_signin"
         android:title="@string/action_signin"
         app:showAsAction="ifRoom|withText"/>
     <item
+        android:id="@+id/action_signup"
+        android:title="@string/action_signup"
+        app:showAsAction="never"/>
+    <item
         android:id="@+id/action_library"
         android:title="@string/action_library"
+        app:showAsAction="never"/>
+    <item
+        android:id="@+id/action_feedback"
+        android:title="@string/action_feedback"
         app:showAsAction="never"/>
     <item
         android:id="@+id/action_settings"

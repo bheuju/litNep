@@ -27,5 +27,9 @@
     <string name="title_activity_books">Books</string>
     <string name="title_activity_shop">Shop</string>
     <string name="title_activity_single_page">Post</string>
+    <string name="action_refresh">Refresh</string>
+    <string name="action_signup">Sign Up</string>
+    <string name="action_feedback">Send us feedback</string>
+    <string name="title_activity_account">Account</string>
 
 </resources>

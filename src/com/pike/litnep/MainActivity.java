@@ -2,11 +2,13 @@ package com.pike.litnep;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
@@ -18,7 +20,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ListView;
 
 import com.pike.litnep.adapter.TabsPagerAdapter;
@@ -73,7 +74,7 @@ public class MainActivity extends ActionBarActivity implements
 				R.string.drawer_close) {
 			public void onDrawerClosed(View drawerView) {
 				super.onDrawerClosed(drawerView);
-				getSupportActionBar().setTitle("Dashboard");
+				getSupportActionBar().setTitle("litNep");
 				supportInvalidateOptionsMenu(); // create call to
 												// onPrepareOptionsMenu()
 			};
@@ -181,11 +182,20 @@ public class MainActivity extends ActionBarActivity implements
 		case R.id.action_compose:
 			openCompose();
 			return true;
+		case R.id.action_refresh:
+			openRefresh();
+			return true;
 		case R.id.action_signin:
 			openSignin();
 			return true;
+		case R.id.action_signup:
+			openSignup();
+			return true;
 		case R.id.action_library:
 			openLibrary();
+			return true;
+		case R.id.action_feedback:
+			openFeedback();
 			return true;
 		case R.id.action_settings:
 			openSettings();
@@ -195,34 +205,31 @@ public class MainActivity extends ActionBarActivity implements
 		}
 	}
 
-	@Override
-	public boolean onPrepareOptionsMenu(Menu menu) {
-		// TODO Auto-generated method stub
-		// if the nav drawer is open, hide action items related to the content
-		// view
-		boolean drawerOpen = mDrawerLayout.isDrawerOpen(mDrawerList);
-		if (drawerOpen) {
-			menu.findItem(R.id.action_signin).setVisible(false);
-			menu.findItem(R.id.action_compose).setVisible(false);
-			// actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
-		} else {
-			// actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
-		}
-
-		if (isLoggedIn) {
-			menu.findItem(R.id.action_signin).setVisible(false);
-		} else {
-			// menu.findItem(R.id.action_signin).setVisible(true);
-		}
-		return super.onPrepareOptionsMenu(menu);
-	}
-
 	/**
 	 * ActionBar functions
 	 *******************************/
+	private void openAccount() {
+		Intent accountActivity = new Intent(this, AccountActivity.class);
+		startActivity(accountActivity);
+	}
 	private void openCompose() {
 		Intent intent = new Intent(this, ComposeActivity.class);
 		startActivity(intent);
+	}
+
+	private void openRefresh() {
+		// mViewPager.setCurrentItem(getPosition());
+		// mViewPager.setCurrentItem(0);
+		List<Fragment> allFragments = getSupportFragmentManager()
+				.getFragments();
+		if (allFragments != null) {
+			for (Fragment fragment : allFragments) {
+				FragmentTab2 f = (FragmentTab2) fragment;
+				if (f.fragmentId == 0)
+					f.refresh();
+			}
+		}
+
 	}
 
 	private void openSignin() {
@@ -230,12 +237,22 @@ public class MainActivity extends ActionBarActivity implements
 		startActivity(intent);
 	}
 
+	private void openSignup() {
+		startActivity(new Intent(this, SignupActivity.class));
+	}
+
 	private void openLibrary() {
 		startActivity(new Intent(this, LibraryActivity.class));
 	}
 
+	private void openFeedback() {
+		GeneralFunctions.getInstance().toast(getApplicationContext(),
+				"Under Construction");
+	}
+
 	private void openSettings() {
-		GeneralFunctions.getInstance().toast(getApplicationContext(), "Under Construction");
+		GeneralFunctions.getInstance().toast(getApplicationContext(),
+				"Under Construction");
 	}
 
 	/**
@@ -246,7 +263,9 @@ public class MainActivity extends ActionBarActivity implements
 		// TODO:
 		switch (position) {
 		case 0:
-			if (!isLoggedIn) { // open only if not logged in
+			if (isLoggedIn) { // open only if logged in
+				openAccount();
+			} else {
 				openSignin();
 			}
 			break;
@@ -296,6 +315,32 @@ public class MainActivity extends ActionBarActivity implements
 	public void onTabReselected(Tab tab, FragmentTransaction ft) {
 		// TODO Auto-generated method stub
 		// ignore
+	}
+
+	/**
+	 * Contents management on basis of logIn status
+	 */
+	@Override
+	public boolean onPrepareOptionsMenu(Menu menu) {
+		// TODO Auto-generated method stub
+		// if the nav drawer is open, hide action items related to the content
+		// view
+		boolean drawerOpen = mDrawerLayout.isDrawerOpen(mDrawerList);
+		if (drawerOpen) {
+			menu.findItem(R.id.action_signin).setVisible(false);
+			menu.findItem(R.id.action_compose).setVisible(false);
+			// actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
+		} else {
+			// actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+		}
+
+		if (isLoggedIn) {
+			menu.findItem(R.id.action_signin).setVisible(false);
+			menu.findItem(R.id.action_signup).setVisible(false);
+		} else {
+			menu.findItem(R.id.action_compose).setVisible(false);
+		}
+		return super.onPrepareOptionsMenu(menu);
 	}
 
 	private void changeOnLogInStatus(boolean status) {

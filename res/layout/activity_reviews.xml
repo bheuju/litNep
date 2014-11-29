@@ -9,15 +9,25 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.pike.litnep.ReviewsActivity" >
 
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:gravity="center"
+        android:text="Under Construction !"
+        android:textColor="#DDD"
+        android:textSize="40sp"
+        android:textStyle="bold" />
+
     <ScrollView
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content" >
+        android:layout_height="wrap_content"
+        android:visibility="gone" >
 
         <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:gravity="center" >
+            android:gravity="center"
+            android:orientation="vertical" >
 
             <Button
                 android:id="@+id/btnObjRequest"

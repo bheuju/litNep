@@ -35,6 +35,8 @@ import com.pike.litnep.model.Post;
 
 public class FragmentTab2 extends Fragment {
 
+	public int fragmentId;
+
 	private ListView list;
 	private ArrayList<Post> mContentsList = new ArrayList<Post>();
 	private CustomListAdapter dataAdapter;
@@ -82,7 +84,8 @@ public class FragmentTab2 extends Fragment {
 				GeneralFunctions.getInstance().toast(getActivity(),
 						post.getTitle());
 				// TODO: call singlepostActivity with passing post id
-				Intent singlePostActivity = new Intent(getActivity(), SinglePage.class);
+				Intent singlePostActivity = new Intent(getActivity(),
+						SinglePage.class);
 				singlePostActivity.putExtra("id", post.getUserName());
 				singlePostActivity.putExtra("title", post.getTitle());
 				singlePostActivity.putExtra("content", post.getContent());
@@ -104,13 +107,18 @@ public class FragmentTab2 extends Fragment {
 							+ (start + count));
 					loadingMore = true;
 
-					// increase start value
 					// load more
-					if (maxPost >= start + count) {
+					// prevent loadMore when nothing left to load
+					if (maxPost >= (start + count)) {
+						GeneralFunctions.getInstance().toast(getActivity(),
+								"Loading more...");
 						start += count;
 						jsonArrRequest();
+					} else {
+						GeneralFunctions.getInstance().toast(getActivity(),
+								"No more contents to load");
 					}
-					// TODO: prevent loadMore when nothing left to load
+
 				}
 			}
 
@@ -163,10 +171,15 @@ public class FragmentTab2 extends Fragment {
 								post.setContent(obj.getString("content"));
 
 								mContentsList.add(post);
-								maxPost = obj.getInt("sn");
+								maxPost++;
 							}
-
 							dataAdapter.notifyDataSetChanged();
+							// show progressDialog on first run only
+							if (!firstRun) {
+								GeneralFunctions.getInstance().toast(
+										getActivity(), "Success");
+							}
+							firstRun = false;
 							loadingMore = false;
 						} catch (JSONException e) {
 							e.printStackTrace();
@@ -174,12 +187,6 @@ public class FragmentTab2 extends Fragment {
 									"Error: " + e.getMessage());
 						}
 
-						// show progressDialog on first run only
-						if (!firstRun) {
-							GeneralFunctions.getInstance().toast(getActivity(),
-									"Loaded more contents");
-						}
-						firstRun = false;
 						hidepDialog();
 					};
 				}, new Response.ErrorListener() {
@@ -212,5 +219,15 @@ public class FragmentTab2 extends Fragment {
 	private void hidepDialog() {
 		if (pDialog.isShowing())
 			pDialog.dismiss();
+	}
+
+	public void refresh() {
+		start = 0;
+		maxPost = 0;
+		loadingMore = true;
+		mContentsList.clear();
+		GeneralFunctions.getInstance().toast(getActivity(), "Refreshing...");
+		jsonArrRequest();
+		dataAdapter.notifyDataSetChanged();
 	}
 }

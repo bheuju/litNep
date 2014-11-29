@@ -42,7 +42,7 @@ public class ReviewsActivity extends ActionBarActivity {
 		setContentView(R.layout.activity_reviews);
 
 		//func.toast("I am inside Reviews !!");
-		GeneralFunctions.getInstance().toast(getApplicationContext(), "Hello Reviews !");
+		//GeneralFunctions.getInstance().toast(getApplicationContext(), "Hello Reviews !");
 
 		tvResponse = (TextView) findViewById(R.id.tvResponse);
 		btnObjRequest = (Button) findViewById(R.id.btnObjRequest);
