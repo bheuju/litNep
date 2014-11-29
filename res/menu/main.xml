@@ -17,18 +17,6 @@
         android:title="@string/action_library"
         app:showAsAction="never"/>
     <item
-        android:id="@+id/action_shop"
-        android:title="@string/action_shop"
-        app:showAsAction="never"/>
-    <item
-        android:id="@+id/action_learn"
-        android:title="@string/action_learn"
-        app:showAsAction="never"/>
-    <item
-        android:id="@+id/action_search"
-        android:title="@string/action_search"
-        app:showAsAction="never"/>
-    <item
         android:id="@+id/action_settings"
         android:orderInCategory="100"
         android:title="@string/action_settings"

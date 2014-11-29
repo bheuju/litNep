@@ -39,8 +39,9 @@ public class SigninActivity extends ActionBarActivity {
 	private static String KEY_SUCCESS = "success";
 	private static String KEY_ERROR = "error";
 	private static String KEY_ERROR_MSG = "error_msg";
-	private static String KEY_UID = "id";
-	private static String KEY_NAME = "name";
+	private static String KEY_ID = "id";
+	private static String KEY_FIRSTNAME = "firstName";
+	private static String KEY_LASTNAME = "lastName";
 	private static String KEY_EMAIL = "email";
 	private static String KEY_CREATED_AT = "created_at";
 
@@ -48,7 +49,7 @@ public class SigninActivity extends ActionBarActivity {
 	private JSONObject jsonObj;
 
 	private static String url = "http://pike.comlu.com/users/";
-
+	
 	private static String TAG = MainActivity.class.getSimpleName();
 
 	@Override
@@ -201,7 +202,9 @@ public class SigninActivity extends ActionBarActivity {
 							getApplicationContext(), "Log In, Successful");
 					Intent mainActivity = new Intent(getApplicationContext(),
 							MainActivity.class);
-					// close all views before launching HOME
+					mainActivity.putExtra("login", true);
+					mainActivity.putExtra("firstName", json.getString(KEY_FIRSTNAME));
+					mainActivity.putExtra("lastName", json.getString(KEY_LASTNAME));
 					mainActivity.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 					startActivity(mainActivity);
 					// close signinActivity

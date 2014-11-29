@@ -10,6 +10,7 @@ import com.pike.litnep.app.AppController;
 import com.pike.litnep.model.Post;
 
 import android.content.Context;
+import android.text.TextUtils.TruncateAt;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -61,7 +62,7 @@ public class CustomListAdapter extends BaseAdapter {
 		TextView contents = (TextView) convertView
 				.findViewById(R.id.tvContents);
 
-		//imageLoader = AppController.getInstance().getImageLoader();
+		// imageLoader = AppController.getInstance().getImageLoader();
 		/*
 		 * NetworkImageView thumbnail = (NetworkImageView) convertView
 		 * .findViewById(R.id.imgThumbnail);
@@ -69,13 +70,23 @@ public class CustomListAdapter extends BaseAdapter {
 
 		// getting post data for the row
 		Post p = (Post) postItems.get(position);
-		Log.d("TAG", p.getUserName());
-		Log.d("TAG", p.getTitle());
-		Log.d("TAG", p.getContents());
 
-		userName.setText(p.getUserName());
-		title.setText(p.getTitle());
-		contents.setText(p.getContents());
+		// Log.d("TAG", p.getUserName());
+		// Log.d("TAG", p.getTitle());
+		// Log.d("TAG", p.getContents());
+
+		String strUserName = p.getUserName();
+		String strTitle = p.getTitle();
+		String strContent = p.getContent();
+
+		//truncating content
+		if (strContent.length() > 100) {
+			strContent = strContent.substring(0, 100) + "...";
+		}
+
+		userName.setText(strUserName);
+		title.setText(strTitle);
+		contents.setText(strContent);
 
 		// thumbnail image
 		// thumbnail.setImageUrl(p.getThumbnailUrl(), imageLoader);

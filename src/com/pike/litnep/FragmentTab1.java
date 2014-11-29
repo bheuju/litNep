@@ -50,6 +50,8 @@ public class FragmentTab1 extends Fragment {
 			Bundle savedInstanceState) {
 		View v = inflater.inflate(R.layout.fragment1, container, false);
 
+		// Log.e("Frag 1", "Called");
+
 		// GeneralFunctions.getInstance().toast(getActivity(),"Hello Fragment!");
 
 		pDialog = new ProgressDialog(getActivity());
@@ -68,7 +70,8 @@ public class FragmentTab1 extends Fragment {
 			list.setAdapter(dataAdapter);
 
 			// get data from remote server
-			jsonArrRequest();
+			// jsonArrRequest();
+
 			// TODO: save data to local database
 			// set dataReceived = true
 
@@ -113,7 +116,7 @@ public class FragmentTab1 extends Fragment {
 							}
 							// tvResponse.setText(jsonResponse);
 							dataAdapter.notifyDataSetChanged();
-							dataReceived = true;
+							// dataReceived = true;
 						} catch (JSONException e) {
 							e.printStackTrace();
 							GeneralFunctions.getInstance().toast(getActivity(),
@@ -131,7 +134,7 @@ public class FragmentTab1 extends Fragment {
 						// error.getMessage());
 						if (error instanceof NoConnectionError) {
 							GeneralFunctions.getInstance().toast(getActivity(),
-									"No Internet Connection!");
+									"Connection Error !");
 						}
 						hidepDialog();
 					}

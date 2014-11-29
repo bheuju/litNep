@@ -30,6 +30,7 @@ import android.widget.TextView;
 public class SignupActivity extends ActionBarActivity {
 
 	private Button btnSignUp;
+	private Button btnSignIn;
 	private TextView tvRegisterError;
 	private EditText etFirstName, etLastName, etEmail, etPass, etPassRe;
 	private String firstName, lastName, email, password, repassword;
@@ -38,8 +39,9 @@ public class SignupActivity extends ActionBarActivity {
 	private static String KEY_SUCCESS = "success";
 	private static String KEY_ERROR = "error";
 	private static String KEY_ERROR_MSG = "error_msg";
-	private static String KEY_UID = "uid";
-	private static String KEY_NAME = "name";
+	private static String KEY_ID = "id";
+	private static String KEY_FIRSTNAME = "firstName";
+	private static String KEY_LASTNAME = "lastName";
 	private static String KEY_EMAIL = "email";
 	private static String KEY_CREATED_AT = "created_at";
 
@@ -60,6 +62,7 @@ public class SignupActivity extends ActionBarActivity {
 		pDialog.setCancelable(false);
 
 		btnSignUp = (Button) findViewById(R.id.btnSignUp);
+		btnSignIn = (Button) findViewById(R.id.btnSignIn);
 		tvRegisterError = (TextView) findViewById(R.id.tvRegisterError);
 
 		etFirstName = (EditText) findViewById(R.id.etFirstName);
@@ -92,6 +95,14 @@ public class SignupActivity extends ActionBarActivity {
 					getJSONFromUrl(url, params);
 				}
 
+			}
+		});
+		
+		btnSignIn.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				startActivity(new Intent(getApplicationContext(), SigninActivity.class));
 			}
 		});
 
@@ -205,7 +216,11 @@ public class SignupActivity extends ActionBarActivity {
 							getApplicationContext(), "Log In, Successful");
 					Intent mainActivity = new Intent(getApplicationContext(),
 							MainActivity.class);
-					// close all views before launching HOME
+					mainActivity.putExtra("login", true);
+					mainActivity.putExtra("firstName",
+							json.getString(KEY_FIRSTNAME));
+					mainActivity.putExtra("lastName",
+							json.getString(KEY_LASTNAME));
 					mainActivity.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 					startActivity(mainActivity);
 					// close signinActivity

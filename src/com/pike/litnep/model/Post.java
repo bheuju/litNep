@@ -1,10 +1,8 @@
 package com.pike.litnep.model;
 
-import android.util.Log;
-
 public class Post {
 	private String userName;
-	private String title, contents;
+	private String title, content;
 	private String date, time;
 
 	private String thumbnailUrl;
@@ -12,10 +10,10 @@ public class Post {
 	public Post() {
 	}
 
-	public Post(String userName, String title, String contents) {
+	public Post(String userName, String title, String content) {
 		this.userName = userName;
 		this.title = title;
-		this.contents = contents;
+		this.content = content;
 	}
 
 	/**
@@ -23,7 +21,6 @@ public class Post {
 	 */
 	public void setUserName(String userName) {
 		this.userName = userName;
-		Log.d("Receiving:", userName);
 	}
 
 	public void setThumbnailUrl(String thumbnailUrl) {
@@ -34,8 +31,8 @@ public class Post {
 		this.title = title;
 	}
 
-	public void setContents(String contents) {
-		this.contents = contents;
+	public void setContent(String content) {
+		this.content = content;
 	}
 
 	/**
@@ -53,8 +50,8 @@ public class Post {
 		return title;
 	}
 
-	public String getContents() {
-		return contents;
+	public String getContent() {
+		return content;
 	}
 
 }

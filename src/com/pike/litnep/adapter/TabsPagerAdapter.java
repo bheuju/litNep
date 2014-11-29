@@ -19,9 +19,9 @@ public class TabsPagerAdapter extends FragmentPagerAdapter {
 	public Fragment getItem(int index) {
 		switch (index)
 		{
+		//case 0:
+		//	return new FragmentTab1();
 		case 0:
-			return new FragmentTab1();
-		case 1:
 			return new FragmentTab2();
 		//case 2:
 		//	return new FragmentTab3();
@@ -32,7 +32,7 @@ public class TabsPagerAdapter extends FragmentPagerAdapter {
 	@Override
 	public int getCount() {
 		// TODO Auto-generated method stub
-		return 2;
+		return 1;
 	}
 
 }

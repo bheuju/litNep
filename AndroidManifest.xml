@@ -7,24 +7,25 @@
     <uses-sdk
         android:minSdkVersion="8"
         android:targetSdkVersion="21" />
-    
-	<uses-permission android:name="android.permission.INTERNET"/>
-	
+
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
+        android:name=".app.AppController"
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/Theme.AppCompat.Light"
-        android:name="com.pike.litnep.app.AppController" >
+        android:theme="@style/Theme.AppCompat.Light" >
         <activity
             android:name=".MainActivity"
-            android:label="@string/app_name" >
+            android:label="@string/app_name"
+            android:screenOrientation="portrait" >
 
             <!--
             android:uiOptions="splitActionBarWhenNarrow" >
             <meta-data
                 android:name="android.support.UI_OPTIONS"
-                android:value="splitActionBarWhenNarrow" />
+                android:value="splitActionBarWhenNarrow" />
             -->
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -43,8 +44,8 @@
         <activity
             android:name=".SigninActivity"
             android:label="@string/title_activity_signin"
-            android:windowSoftInputMode="stateHidden"
-            android:parentActivityName=".MainActivity" >
+            android:parentActivityName=".MainActivity"
+            android:windowSoftInputMode="stateHidden" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.pike.litnep.MainActivity" />
@@ -52,27 +53,35 @@
         <activity
             android:name=".SignupActivity"
             android:label="@string/title_activity_signup"
-            android:windowSoftInputMode="stateHidden"
-            android:parentActivityName=".SigninActivity" >
+            android:parentActivityName=".SigninActivity"
+            android:windowSoftInputMode="stateHidden" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.pike.litnep.SigninActivity" />
         </activity>
         <activity
             android:name=".LibraryActivity"
-            android:label="@string/title_activity_library" >
+            android:label="@string/title_activity_library"
+            android:screenOrientation="portrait" >
         </activity>
         <activity
             android:name=".ReviewsActivity"
-            android:label="@string/title_activity_reviews" >
+            android:label="@string/title_activity_reviews"
+            android:screenOrientation="portrait" >
         </activity>
         <activity
             android:name=".BooksActivity"
-            android:label="@string/title_activity_books" >
+            android:label="@string/title_activity_books"
+            android:screenOrientation="portrait" >
         </activity>
         <activity
             android:name=".ShopActivity"
-            android:label="@string/title_activity_shop" >
+            android:label="@string/title_activity_shop"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name=".SinglePage"
+            android:label="@string/title_activity_single_page" >
         </activity>
     </application>
 
