@@ -13,6 +13,7 @@ import com.android.volley.Request.Method;
 import com.android.volley.toolbox.StringRequest;
 import com.pike.litnep.app.AppController;
 import com.pike.litnep.library.UserFunctions;
+import com.pike.litnep.util.GeneralFunctions;
 
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -49,7 +50,7 @@ public class SigninActivity extends ActionBarActivity {
 	private JSONObject jsonObj;
 
 	private static String url = "http://pike.comlu.com/users/";
-	
+
 	private static String TAG = MainActivity.class.getSimpleName();
 
 	@Override
@@ -203,8 +204,11 @@ public class SigninActivity extends ActionBarActivity {
 					Intent mainActivity = new Intent(getApplicationContext(),
 							MainActivity.class);
 					mainActivity.putExtra("login", true);
-					mainActivity.putExtra("firstName", json.getString(KEY_FIRSTNAME));
-					mainActivity.putExtra("lastName", json.getString(KEY_LASTNAME));
+					mainActivity.putExtra("userId", json.getInt(KEY_ID));
+					mainActivity.putExtra("firstName",
+							json.getString(KEY_FIRSTNAME));
+					mainActivity.putExtra("lastName",
+							json.getString(KEY_LASTNAME));
 					mainActivity.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 					startActivity(mainActivity);
 					// close signinActivity

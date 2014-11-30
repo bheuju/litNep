@@ -13,6 +13,7 @@ import com.android.volley.toolbox.JsonRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.pike.litnep.app.AppController;
 import com.pike.litnep.library.UserFunctions;
+import com.pike.litnep.util.GeneralFunctions;
 
 import android.support.v7.app.ActionBarActivity;
 import android.app.ProgressDialog;
@@ -97,12 +98,13 @@ public class SignupActivity extends ActionBarActivity {
 
 			}
 		});
-		
+
 		btnSignIn.setOnClickListener(new View.OnClickListener() {
-			
+
 			@Override
 			public void onClick(View v) {
-				startActivity(new Intent(getApplicationContext(), SigninActivity.class));
+				startActivity(new Intent(getApplicationContext(),
+						SigninActivity.class));
 			}
 		});
 
@@ -217,6 +219,7 @@ public class SignupActivity extends ActionBarActivity {
 					Intent mainActivity = new Intent(getApplicationContext(),
 							MainActivity.class);
 					mainActivity.putExtra("login", true);
+					mainActivity.putExtra("userId", json.getInt(KEY_ID));
 					mainActivity.putExtra("firstName",
 							json.getString(KEY_FIRSTNAME));
 					mainActivity.putExtra("lastName",

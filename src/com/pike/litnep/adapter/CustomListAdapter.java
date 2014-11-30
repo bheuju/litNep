@@ -8,6 +8,7 @@ import com.android.volley.toolbox.NetworkImageView;
 import com.pike.litnep.R;
 import com.pike.litnep.app.AppController;
 import com.pike.litnep.model.Post;
+import com.pike.litnep.util.GeneralFunctions;
 
 import android.content.Context;
 import android.text.TextUtils.TruncateAt;
@@ -61,7 +62,8 @@ public class CustomListAdapter extends BaseAdapter {
 		TextView title = (TextView) convertView.findViewById(R.id.tvTitle);
 		TextView contents = (TextView) convertView
 				.findViewById(R.id.tvContents);
-
+		TextView createdAt = (TextView) convertView
+				.findViewById(R.id.tvCreatedAt);
 		// imageLoader = AppController.getInstance().getImageLoader();
 		/*
 		 * NetworkImageView thumbnail = (NetworkImageView) convertView
@@ -75,19 +77,24 @@ public class CustomListAdapter extends BaseAdapter {
 		// Log.d("TAG", p.getTitle());
 		// Log.d("TAG", p.getContents());
 
-		String strUserName = p.getUserName();
+		String strfirstName = p.getfirstName();
+		String strlastName = p.getlastName();
 		String strTitle = p.getTitle();
 		String strContent = p.getContent();
+		String strCreatedAt = p.getCreatedAt();
 
-		//truncating content
+		// parsing date to suitable format
+		strCreatedAt = GeneralFunctions.getInstance().dateParser(strCreatedAt, "MMM dd");
+		// truncating content
 		if (strContent.length() > 100) {
 			strContent = strContent.substring(0, 100) + "...";
 		}
 
-		userName.setText(strUserName);
+		userName.setText(strfirstName + " " + strlastName); // show only
+															// firstName
 		title.setText(strTitle);
 		contents.setText(strContent);
-
+		createdAt.setText(strCreatedAt);
 		// thumbnail image
 		// thumbnail.setImageUrl(p.getThumbnailUrl(), imageLoader);
 

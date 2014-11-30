@@ -1,5 +1,9 @@
 package com.pike.litnep;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -9,6 +13,7 @@ import com.android.volley.VolleyLog;
 import com.android.volley.Request.Method;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.pike.litnep.app.AppController;
+import com.pike.litnep.util.GeneralFunctions;
 
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
@@ -19,7 +24,7 @@ import android.widget.TextView;
 
 public class SinglePage extends ActionBarActivity {
 
-	private TextView tvTitle, tvContent;
+	private TextView tvTitle, tvContent, tvCreatedAt;
 
 	private static String TAG = MainActivity.class.getSimpleName();
 
@@ -27,20 +32,28 @@ public class SinglePage extends ActionBarActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_single_page);
-		
+
 		tvTitle = (TextView) findViewById(R.id.tvTitle);
 		tvContent = (TextView) findViewById(R.id.tvContent);
-		
-		Bundle extras = getIntent().getExtras(); 
-		String id = extras.getString("id");
+		tvCreatedAt = (TextView) findViewById(R.id.tvCreatedAt);
+
+		Bundle extras = getIntent().getExtras();
+
+		String firstName = extras.getString("firstName");
+		String lastName = extras.getString("lastName");
 		String title = extras.getString("title");
 		String content = extras.getString("content");
-		
+		String created_at = extras.getString("created_at");
+
+		// parsing date to suitable formats
+		created_at = GeneralFunctions.getInstance().dateParser(created_at, "MMM dd, yyyy");
+
 		getSupportActionBar().setTitle(title);
-		
+
 		tvTitle.setText(title);
+		tvCreatedAt.setText(created_at);
 		tvContent.setText(content);
-		
+
 	}
 
 	@Override

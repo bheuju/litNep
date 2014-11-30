@@ -15,6 +15,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBar.Tab;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -23,6 +24,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.pike.litnep.adapter.TabsPagerAdapter;
+import com.pike.litnep.util.GeneralFunctions;
 
 public class MainActivity extends ActionBarActivity implements
 		ActionBar.TabListener {
@@ -45,7 +47,10 @@ public class MainActivity extends ActionBarActivity implements
 
 	// if signIn
 	boolean isLoggedIn = false;
-	String userName = null;
+	private String userName = null;
+	
+	private int userId; 
+	
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +60,7 @@ public class MainActivity extends ActionBarActivity implements
 		Bundle extras = getIntent().getExtras();
 		if (extras != null) {
 			isLoggedIn = extras.getBoolean("login");
+			userId = extras.getInt("userId");
 			userName = extras.getString("firstName") + " "
 					+ extras.getString("lastName");
 		}
@@ -212,9 +218,11 @@ public class MainActivity extends ActionBarActivity implements
 		Intent accountActivity = new Intent(this, AccountActivity.class);
 		startActivity(accountActivity);
 	}
+
 	private void openCompose() {
-		Intent intent = new Intent(this, ComposeActivity.class);
-		startActivity(intent);
+		Intent composeActivity = new Intent(this, ComposeActivity.class);
+		composeActivity.putExtra("userId", userId);
+		startActivity(composeActivity);
 	}
 
 	private void openRefresh() {

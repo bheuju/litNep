@@ -4,12 +4,14 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.android.volley.Request.Method;
+import com.android.volley.NoConnectionError;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.pike.litnep.app.AppController;
+import com.pike.litnep.util.GeneralFunctions;
 
 import android.support.v7.app.ActionBarActivity;
 import android.app.ProgressDialog;
@@ -30,12 +32,18 @@ public class ComposeActivity extends ActionBarActivity {
 	private String url = "http://pike.comlu.com/extra/compose.php";
 	private ProgressDialog pDialog;
 
+	private int userId;
 	private String title, content;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_compose);
+
+		Bundle extras = getIntent().getExtras();
+		if (extras != null) {
+			userId = extras.getInt("userId");
+		}
 
 		etTitle = (EditText) findViewById(R.id.etTitle);
 		etContent = (EditText) findViewById(R.id.etContent);
@@ -106,26 +114,34 @@ public class ComposeActivity extends ActionBarActivity {
 								getApplicationContext(), "Success");
 
 						// goto mainActvity
-						Intent mainActivity = new Intent(
-								getApplicationContext(), MainActivity.class);
+						// Intent mainActivity = new
+						// Intent(getApplicationContext(), MainActivity.class);
 						// close all views before launching HOME
-						mainActivity.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-						startActivity(mainActivity);
+						// mainActivity.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+						// startActivity(mainActivity);
 						hidepDialog();
 						// close signinActivity
 						finish();
+						// MainActivity main = new MainActivity();
+
 					}
 				}, new Response.ErrorListener() {
 					@Override
 					public void onErrorResponse(VolleyError error) {
-						GeneralFunctions.getInstance().toast(
-								getApplicationContext(), error.toString());
+						// GeneralFunctions.getInstance().toast(getApplicationContext(),
+						// error.toString());
+						if (error instanceof NoConnectionError) {
+							GeneralFunctions.getInstance().toast(
+									getApplicationContext(),
+									"Connection Error !");
+						}
 						hidepDialog();
 					}
 				}) {
 			@Override
 			protected Map<String, String> getParams() {
 				Map<String, String> params = new HashMap<String, String>();
+				params.put("user_id", String.valueOf(userId));
 				params.put("title", title);
 				params.put("content", content);
 				return params;

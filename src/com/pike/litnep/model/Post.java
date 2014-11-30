@@ -1,17 +1,20 @@
 package com.pike.litnep.model;
 
 public class Post {
-	private String userName;
+	private int userId;
+	private String firstName;
+	private String lastName;
 	private String title, content;
-	private String date, time;
+	private String created_at;
 
 	private String thumbnailUrl;
 
 	public Post() {
 	}
 
-	public Post(String userName, String title, String content) {
-		this.userName = userName;
+	public Post(String firstName, String lastName, String title, String content) {
+		this.firstName = firstName;
+		this.lastName = lastName;
 		this.title = title;
 		this.content = content;
 	}
@@ -19,8 +22,16 @@ public class Post {
 	/**
 	 * Setters
 	 */
-	public void setUserName(String userName) {
-		this.userName = userName;
+	public void setUserId(int userId) {
+		this.userId = userId;
+	}
+
+	public void setfirstName(String firstName) {
+		this.firstName = firstName;
+	}
+
+	public void setlastName(String lastName) {
+		this.lastName = lastName;
 	}
 
 	public void setThumbnailUrl(String thumbnailUrl) {
@@ -35,11 +46,23 @@ public class Post {
 		this.content = content;
 	}
 
+	public void setCreatedAt(String created_at) {
+		this.created_at = created_at;
+	}
+
 	/**
 	 * Getters
 	 */
-	public String getUserName() {
-		return userName;
+	public int getUserId() {
+		return userId;
+	}
+
+	public String getfirstName() {
+		return firstName;
+	}
+
+	public String getlastName() {
+		return lastName;
 	}
 
 	public String getThumbnailUrl() {
@@ -54,4 +77,7 @@ public class Post {
 		return content;
 	}
 
+	public String getCreatedAt() {
+		return created_at;
+	}
 }

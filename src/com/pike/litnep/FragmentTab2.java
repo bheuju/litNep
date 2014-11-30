@@ -1,5 +1,6 @@
 package com.pike.litnep;
 
+import java.security.acl.LastOwnerException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -32,6 +33,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.pike.litnep.adapter.CustomListAdapter;
 import com.pike.litnep.app.AppController;
 import com.pike.litnep.model.Post;
+import com.pike.litnep.util.GeneralFunctions;
 
 public class FragmentTab2 extends Fragment {
 
@@ -86,9 +88,11 @@ public class FragmentTab2 extends Fragment {
 				// TODO: call singlepostActivity with passing post id
 				Intent singlePostActivity = new Intent(getActivity(),
 						SinglePage.class);
-				singlePostActivity.putExtra("id", post.getUserName());
+				singlePostActivity.putExtra("firstName", post.getfirstName());
+				singlePostActivity.putExtra("lastName", post.getlastName());
 				singlePostActivity.putExtra("title", post.getTitle());
 				singlePostActivity.putExtra("content", post.getContent());
+				singlePostActivity.putExtra("created_at", post.getCreatedAt());
 				startActivity(singlePostActivity);
 			}
 
@@ -166,10 +170,12 @@ public class FragmentTab2 extends Fragment {
 								JSONObject obj = (JSONObject) response.get(i);
 
 								Post post = new Post();
-								post.setUserName(obj.getString("sn"));
+								post.setUserId(obj.getInt("user_id"));
+								post.setfirstName(obj.getString("firstName"));
+								post.setlastName(obj.getString("lastName"));
 								post.setTitle(obj.getString("title"));
 								post.setContent(obj.getString("content"));
-
+								post.setCreatedAt(obj.getString("created_at"));
 								mContentsList.add(post);
 								maxPost++;
 							}
