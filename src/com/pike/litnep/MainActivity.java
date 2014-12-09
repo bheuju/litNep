@@ -48,9 +48,12 @@ public class MainActivity extends ActionBarActivity implements
 	// if signIn
 	boolean isLoggedIn = false;
 	private String userName = null;
-	
-	private int userId; 
-	
+
+	private static int userId;
+
+	public int getUserId() {
+		return userId;
+	}
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -80,7 +83,7 @@ public class MainActivity extends ActionBarActivity implements
 				R.string.drawer_close) {
 			public void onDrawerClosed(View drawerView) {
 				super.onDrawerClosed(drawerView);
-				getSupportActionBar().setTitle("litNep");
+				getSupportActionBar().setTitle("akshyar");
 				supportInvalidateOptionsMenu(); // create call to
 												// onPrepareOptionsMenu()
 			};

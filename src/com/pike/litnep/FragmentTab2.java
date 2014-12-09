@@ -11,16 +11,24 @@ import org.json.JSONObject;
 import org.xml.sax.Parser;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.util.Log;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ContextMenu.ContextMenuInfo;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
+import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.android.volley.NoConnectionError;
 import com.android.volley.Request.Method;
@@ -40,6 +48,9 @@ public class FragmentTab2 extends Fragment {
 	public int fragmentId;
 
 	private ListView list;
+	private LinearLayout noConMsg;
+	private TextView tvNoConMsg;
+	private Button btnTryAgain;
 	private ArrayList<Post> mContentsList = new ArrayList<Post>();
 	private CustomListAdapter dataAdapter;
 
@@ -61,20 +72,35 @@ public class FragmentTab2 extends Fragment {
 	private boolean loadingMore = true;
 	private boolean firstRun = true;
 
+	private View loadMoreView;
+
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		View v = inflater.inflate(R.layout.fragment2, container, false);
 
+		list = (ListView) v.findViewById(R.id.listPosts);
+		noConMsg = (LinearLayout) v.findViewById(R.id.noConMsg);
+		tvNoConMsg = (TextView) v.findViewById(R.id.tvNoConMsg);
+		btnTryAgain = (Button) v.findViewById(R.id.btnTryAgain);
+
+		noConMsg.setVisibility(View.GONE);
+
 		pDialog = new ProgressDialog(getActivity());
 		pDialog.setMessage("Please wait... \nLoading contents");
 		pDialog.setCancelable(true);
 
-		list = (ListView) v.findViewById(R.id.listPosts);
+		// load more footer for list view
+		loadMoreView = ((LayoutInflater) getActivity().getApplicationContext()
+				.getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(
+				R.layout.list_footer_loadmore, null, false);
+		list.addFooterView(loadMoreView, null, false);
+
 		dataAdapter = new CustomListAdapter(getActivity(), mContentsList);
 		list.setAdapter(dataAdapter);
-
 		jsonArrRequest();
+
+		registerForContextMenu(list);
 
 		// list.setTextFilterEnabled(true);
 		list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -114,13 +140,14 @@ public class FragmentTab2 extends Fragment {
 					// load more
 					// prevent loadMore when nothing left to load
 					if (maxPost >= (start + count)) {
-						GeneralFunctions.getInstance().toast(getActivity(),
-								"Loading more...");
+						// GeneralFunctions.getInstance().toast(getActivity(),
+						// "Loading more...");
 						start += count;
 						jsonArrRequest();
 					} else {
-						GeneralFunctions.getInstance().toast(getActivity(),
-								"No more contents to load");
+						// GeneralFunctions.getInstance().toast(getActivity(),
+						// "No more contents to load");
+						list.removeFooterView(loadMoreView);
 					}
 
 				}
@@ -133,10 +160,53 @@ public class FragmentTab2 extends Fragment {
 
 		});
 
+		btnTryAgain.setOnClickListener(new View.OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				refresh();
+
+			}
+		});
+
 		// TODO: load data from local database
 		// TODO: and add to mContentsList
 
 		return v;
+	}
+
+	// Automatically called when user long-clicks ListView items
+	@Override
+	public void onCreateContextMenu(ContextMenu menu, View v,
+			ContextMenuInfo menuInfo) {
+		super.onCreateContextMenu(menu, v, menuInfo);
+
+		if (v.getId() == R.id.listPosts) {
+			AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuInfo;
+			Post post = (Post) dataAdapter.getItem(info.position);
+			menu.setHeaderTitle(post.getTitle());
+
+			int userId = post.getUserId();
+			MainActivity act = new MainActivity();
+
+			ArrayList<String> menuItems = new ArrayList<String>();
+			menuItems.add("");
+			menuItems.add("Save");
+			menuItems.add("Favourite");
+
+			if (act.getUserId() == userId) {
+				Log.e("Testing long press:", "Validation Success");
+				menuItems.set(0, "Edit");
+			} else {
+				Log.e("Testing long press:", act.getUserId() + " User IDs "
+						+ userId);
+				menuItems.set(0, "Share");
+			}
+
+			for (int i = 0; i < menuItems.size(); i++) {
+				menu.add(Menu.NONE, i, i, menuItems.get(i));
+			}
+		}
 	}
 
 	/**
@@ -182,8 +252,8 @@ public class FragmentTab2 extends Fragment {
 							dataAdapter.notifyDataSetChanged();
 							// show progressDialog on first run only
 							if (!firstRun) {
-								GeneralFunctions.getInstance().toast(
-										getActivity(), "Success");
+								// GeneralFunctions.getInstance().toast(
+								// getActivity(), "Success");
 							}
 							firstRun = false;
 							loadingMore = false;
@@ -192,7 +262,8 @@ public class FragmentTab2 extends Fragment {
 							GeneralFunctions.getInstance().toast(getActivity(),
 									"Error: " + e.getMessage());
 						}
-
+						// tvNoConMsg.setVisibility(View.GONE);
+						noConMsg.setVisibility(View.GONE);
 						hidepDialog();
 					};
 				}, new Response.ErrorListener() {
@@ -207,6 +278,8 @@ public class FragmentTab2 extends Fragment {
 							GeneralFunctions.getInstance().toast(getActivity(),
 									"Connection Error !");
 						}
+						// tvNoConMsg.setVisibility(View.VISIBLE);
+						noConMsg.setVisibility(View.VISIBLE);
 						hidepDialog();
 					}
 
@@ -234,6 +307,7 @@ public class FragmentTab2 extends Fragment {
 		mContentsList.clear();
 		GeneralFunctions.getInstance().toast(getActivity(), "Refreshing...");
 		jsonArrRequest();
+		list.addFooterView(loadMoreView, null, false);
 		dataAdapter.notifyDataSetChanged();
 	}
 }

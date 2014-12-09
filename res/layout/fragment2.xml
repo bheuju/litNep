@@ -6,6 +6,44 @@
     android:background="#f0f0f0"
     android:orientation="vertical" >
 
+    <LinearLayout
+        android:id="@+id/noConMsg"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:gravity="center"
+        android:orientation="vertical" >
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:gravity="center"
+            android:orientation="horizontal" >
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="10dp"
+                android:src="@drawable/ic_stat_error" />
+
+            <TextView
+                android:id="@+id/tvNoConMsg"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Data unavailable ..."
+                android:textColor="#BBB"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/btnTryAgain"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Try Again"
+            android:textSize="14sp" />
+    </LinearLayout>
+
     <ListView
         android:id="@+id/listPosts"
         android:layout_width="fill_parent"
