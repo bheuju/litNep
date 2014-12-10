@@ -54,21 +54,21 @@ public class CustomListAdapter extends BaseAdapter {
 					.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 			convertView = inflater.inflate(R.layout.list_item_custom, parent,
 					false);
+			imageLoader = AppController.getInstance().getImageLoader();
 		}
+
 		// ImageView thumbnail = (ImageView) convertView
 		// .findViewById(R.id.imgThumbnail);
+
+		NetworkImageView thumbnail = (NetworkImageView) convertView
+				.findViewById(R.id.imgThumbnail);
 		TextView userName = (TextView) convertView
 				.findViewById(R.id.tvUserName);
 		TextView title = (TextView) convertView.findViewById(R.id.tvTitle);
-		TextView contents = (TextView) convertView
-				.findViewById(R.id.tvContents);
 		TextView createdAt = (TextView) convertView
 				.findViewById(R.id.tvCreatedAt);
-		// imageLoader = AppController.getInstance().getImageLoader();
-		/*
-		 * NetworkImageView thumbnail = (NetworkImageView) convertView
-		 * .findViewById(R.id.imgThumbnail);
-		 */
+		TextView contents = (TextView) convertView
+				.findViewById(R.id.tvContents);
 
 		// getting post data for the row
 		Post p = (Post) postItems.get(position);
@@ -79,24 +79,24 @@ public class CustomListAdapter extends BaseAdapter {
 
 		String strfirstName = p.getfirstName();
 		String strlastName = p.getlastName();
+		String strThumbnailUrl = p.getThumbnailUrl();
 		String strTitle = p.getTitle();
 		String strContent = p.getContent();
 		String strCreatedAt = p.getCreatedAt();
 
 		// parsing date to suitable format
-		strCreatedAt = GeneralFunctions.getInstance().dateParser(strCreatedAt, "MMM dd");
+		strCreatedAt = GeneralFunctions.getInstance().dateParser(strCreatedAt,
+				"MMM dd");
 		// truncating content
 		if (strContent.length() > 100) {
 			strContent = strContent.substring(0, 100) + "...";
 		}
 
-		userName.setText(strfirstName + " " + strlastName); // show only
-															// firstName
+		userName.setText(strfirstName + " " + strlastName);
 		title.setText(strTitle);
 		contents.setText(strContent);
 		createdAt.setText(strCreatedAt);
-		// thumbnail image
-		// thumbnail.setImageUrl(p.getThumbnailUrl(), imageLoader);
+		thumbnail.setImageUrl(strThumbnailUrl, imageLoader);
 
 		return convertView;
 	}

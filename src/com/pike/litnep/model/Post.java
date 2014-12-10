@@ -12,9 +12,11 @@ public class Post {
 	public Post() {
 	}
 
-	public Post(String firstName, String lastName, String title, String content) {
+	public Post(String firstName, String lastName, String thumbnailUrl,
+			String title, String content) {
 		this.firstName = firstName;
 		this.lastName = lastName;
+		this.thumbnailUrl = thumbnailUrl;
 		this.title = title;
 		this.content = content;
 	}

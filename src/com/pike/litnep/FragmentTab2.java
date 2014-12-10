@@ -100,7 +100,7 @@ public class FragmentTab2 extends Fragment {
 		list.setAdapter(dataAdapter);
 		jsonArrRequest();
 
-		registerForContextMenu(list);
+		registerForContextMenu(list); // for long press
 
 		// list.setTextFilterEnabled(true);
 		list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -137,16 +137,13 @@ public class FragmentTab2 extends Fragment {
 							+ (start + count));
 					loadingMore = true;
 
-					// load more
 					// prevent loadMore when nothing left to load
 					if (maxPost >= (start + count)) {
-						// GeneralFunctions.getInstance().toast(getActivity(),
-						// "Loading more...");
+						// Load more
 						start += count;
 						jsonArrRequest();
 					} else {
-						// GeneralFunctions.getInstance().toast(getActivity(),
-						// "No more contents to load");
+						// No more to load
 						list.removeFooterView(loadMoreView);
 					}
 
@@ -243,9 +240,12 @@ public class FragmentTab2 extends Fragment {
 								post.setUserId(obj.getInt("user_id"));
 								post.setfirstName(obj.getString("firstName"));
 								post.setlastName(obj.getString("lastName"));
+								post.setThumbnailUrl(obj
+										.getString("thumbnailUrl"));
 								post.setTitle(obj.getString("title"));
 								post.setContent(obj.getString("content"));
 								post.setCreatedAt(obj.getString("created_at"));
+
 								mContentsList.add(post);
 								maxPost++;
 							}
@@ -262,7 +262,6 @@ public class FragmentTab2 extends Fragment {
 							GeneralFunctions.getInstance().toast(getActivity(),
 									"Error: " + e.getMessage());
 						}
-						// tvNoConMsg.setVisibility(View.GONE);
 						noConMsg.setVisibility(View.GONE);
 						hidepDialog();
 					};
@@ -286,8 +285,8 @@ public class FragmentTab2 extends Fragment {
 				}) {
 		};
 
-		// add request to request queue
-		AppController.getInstance().addToRequestQueue(req);
+		// add request to request queue, and add tag for cancel if necessary
+		AppController.getInstance().addToRequestQueue(req, "req");
 	}
 
 	private void showpDialog() {
@@ -301,12 +300,14 @@ public class FragmentTab2 extends Fragment {
 	}
 
 	public void refresh() {
+		AppController.getInstance().cancelPendingRequests("req");
 		start = 0;
 		maxPost = 0;
 		loadingMore = true;
 		mContentsList.clear();
 		GeneralFunctions.getInstance().toast(getActivity(), "Refreshing...");
 		jsonArrRequest();
+		list.removeFooterView(loadMoreView);
 		list.addFooterView(loadMoreView, null, false);
 		dataAdapter.notifyDataSetChanged();
 	}
