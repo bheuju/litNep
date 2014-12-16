@@ -20,13 +20,13 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-public class CustomListAdapter extends BaseAdapter {
+public class CustomListAdapterPost extends BaseAdapter {
 	private Context context;
 	private LayoutInflater inflater;
 	private ArrayList<Post> postItems;
 	ImageLoader imageLoader = AppController.getInstance().getImageLoader();
 
-	public CustomListAdapter(Context context, ArrayList<Post> postItems) {
+	public CustomListAdapterPost(Context context, ArrayList<Post> postItems) {
 		this.context = context;
 		this.postItems = postItems;
 	}
@@ -52,8 +52,8 @@ public class CustomListAdapter extends BaseAdapter {
 		if (convertView == null) {
 			inflater = (LayoutInflater) context
 					.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-			convertView = inflater.inflate(R.layout.list_item_custom, parent,
-					false);
+			convertView = inflater.inflate(R.layout.list_item_custom_post,
+					parent, false);
 			imageLoader = AppController.getInstance().getImageLoader();
 		}
 

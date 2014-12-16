@@ -8,7 +8,6 @@ import java.util.Map;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.xml.sax.Parser;
 
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -38,7 +37,7 @@ import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonRequest;
 import com.android.volley.toolbox.StringRequest;
-import com.pike.litnep.adapter.CustomListAdapter;
+import com.pike.litnep.adapter.CustomListAdapterPost;
 import com.pike.litnep.app.AppController;
 import com.pike.litnep.model.Post;
 import com.pike.litnep.util.GeneralFunctions;
@@ -49,10 +48,9 @@ public class FragmentTab2 extends Fragment {
 
 	private ListView list;
 	private LinearLayout noConMsg;
-	private TextView tvNoConMsg;
 	private Button btnTryAgain;
 	private ArrayList<Post> mContentsList = new ArrayList<Post>();
-	private CustomListAdapter dataAdapter;
+	private CustomListAdapterPost dataAdapter;
 
 	private int start = 0;
 	private int count = 10;
@@ -81,7 +79,6 @@ public class FragmentTab2 extends Fragment {
 
 		list = (ListView) v.findViewById(R.id.listPosts);
 		noConMsg = (LinearLayout) v.findViewById(R.id.noConMsg);
-		tvNoConMsg = (TextView) v.findViewById(R.id.tvNoConMsg);
 		btnTryAgain = (Button) v.findViewById(R.id.btnTryAgain);
 
 		noConMsg.setVisibility(View.GONE);
@@ -96,7 +93,7 @@ public class FragmentTab2 extends Fragment {
 				R.layout.list_footer_loadmore, null, false);
 		list.addFooterView(loadMoreView, null, false);
 
-		dataAdapter = new CustomListAdapter(getActivity(), mContentsList);
+		dataAdapter = new CustomListAdapterPost(getActivity(), mContentsList);
 		list.setAdapter(dataAdapter);
 		jsonArrRequest();
 
@@ -108,7 +105,8 @@ public class FragmentTab2 extends Fragment {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
-				Post post = (Post) parent.getItemAtPosition(position);
+				// Post post = (Post) parent.getItemAtPosition(position);
+				Post post = (Post) dataAdapter.getItem(position);
 				GeneralFunctions.getInstance().toast(getActivity(),
 						post.getTitle());
 				// TODO: call singlepostActivity with passing post id
@@ -282,8 +280,7 @@ public class FragmentTab2 extends Fragment {
 						hidepDialog();
 					}
 
-				}) {
-		};
+				});
 
 		// add request to request queue, and add tag for cancel if necessary
 		AppController.getInstance().addToRequestQueue(req, "req");
