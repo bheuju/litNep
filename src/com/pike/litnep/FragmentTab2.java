@@ -1,6 +1,5 @@
 package com.pike.litnep;
 
-import java.security.acl.LastOwnerException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -15,10 +14,12 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.support.v4.util.ArrayMap;
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ContextMenu.ContextMenuInfo;
@@ -46,11 +47,19 @@ public class FragmentTab2 extends Fragment {
 
 	public int fragmentId;
 
+	private int postSn = 0;
+	private MainActivity act = new MainActivity();
+
+	private boolean delete = false;
+	private boolean edit = false;
+
 	private ListView list;
 	private LinearLayout noConMsg;
 	private Button btnTryAgain;
 	private ArrayList<Post> mContentsList = new ArrayList<Post>();
 	private CustomListAdapterPost dataAdapter;
+
+	private Map<String, String> item = new HashMap<String, String>();
 
 	private int start = 0;
 	private int count = 10;
@@ -58,6 +67,7 @@ public class FragmentTab2 extends Fragment {
 
 	private String urlBase = "http://pike.comlu.com/extra/read.php";
 	private String url = "";
+	private String urlDelete = "http://pike.comlu.com/extra/delete.php";
 
 	private static String TAG = MainActivity.class.getSimpleName();
 	// progress dialog
@@ -182,26 +192,129 @@ public class FragmentTab2 extends Fragment {
 			menu.setHeaderTitle(post.getTitle());
 
 			int userId = post.getUserId();
-			MainActivity act = new MainActivity();
+			postSn = post.getSn();
+
+			item.put("edit", "Edit");
+			item.put("delete", "Delete");
+			item.put("share", "Share");
+			item.put("save", "Save");
+			item.put("fav", "Favourite");
 
 			ArrayList<String> menuItems = new ArrayList<String>();
 			menuItems.add("");
 			menuItems.add("Save");
 			menuItems.add("Favourite");
 
+			// if the (logged-in user) is (owner of the post) then provide
+			// permission to delete or edit
 			if (act.getUserId() == userId) {
 				Log.e("Testing long press:", "Validation Success");
+				// menu.findItem(0).setVisible(false);
 				menuItems.set(0, "Edit");
+				menuItems.set(1, "Delete");
+				edit = true;
+				delete = true;
 			} else {
 				Log.e("Testing long press:", act.getUserId() + " User IDs "
 						+ userId);
 				menuItems.set(0, "Share");
+				edit = false;
+				delete = false;
 			}
 
 			for (int i = 0; i < menuItems.size(); i++) {
 				menu.add(Menu.NONE, i, i, menuItems.get(i));
 			}
 		}
+	}
+
+	@Override
+	public boolean onContextItemSelected(MenuItem item) {
+
+		switch (item.getItemId()) {
+		case 0:
+			if (edit == true) {
+				edit = false;
+				doEdit();
+			} else {
+				doShare();
+			}
+			return true;
+		case 1:
+			if (delete == true) {
+				delete = false;
+				doDelete();
+			} else {
+				doSave();
+			}
+			return true;
+		case 2:
+			doFav();
+			return true;
+		default:
+			return super.onContextItemSelected(item);
+		}
+
+	}
+
+	/**
+	 * General Post Functions
+	 */
+	public void doEdit() {
+		GeneralFunctions.getInstance().toast(getActivity(), "Edit");
+		// TODO: Edit function: load to compose
+	}
+
+	public void doDelete() {
+		GeneralFunctions.getInstance().toast(getActivity(), "Delete");
+
+		final int userId = act.getUserId();
+
+		Log.e("Check Delete data", "UserID: " + userId + ", sn: " + postSn);
+
+		StringRequest req = new StringRequest(Method.POST, urlDelete,
+				new Response.Listener<String>() {
+					@Override
+					public void onResponse(String response) {
+						Log.d("Response: ", response.toString());
+
+						GeneralFunctions.getInstance().toast(getActivity(),
+								"Deleted Successfully");
+					}
+				}, new Response.ErrorListener() {
+					@Override
+					public void onErrorResponse(VolleyError error) {
+						// GeneralFunctions.getInstance().toast(getApplicationContext(),
+						// error.toString());
+						if (error instanceof NoConnectionError) {
+							GeneralFunctions.getInstance().toast(getActivity(),
+									"Connection Error !");
+						}
+					}
+				}) {
+			@Override
+			protected Map<String, String> getParams() {
+				Map<String, String> params = new HashMap<String, String>();
+				params.put("user_id", String.valueOf(userId));
+				params.put("sn", String.valueOf(postSn));
+				return params;
+			}
+		};
+		// add to request queue
+		AppController.getInstance().addToRequestQueue(req);
+
+	}
+
+	public void doShare() {
+		GeneralFunctions.getInstance().toast(getActivity(), "Share");
+	}
+
+	public void doSave() {
+		GeneralFunctions.getInstance().toast(getActivity(), "Save");
+	}
+
+	public void doFav() {
+		GeneralFunctions.getInstance().toast(getActivity(), "Fav");
 	}
 
 	/**
@@ -235,6 +348,7 @@ public class FragmentTab2 extends Fragment {
 								JSONObject obj = (JSONObject) response.get(i);
 
 								Post post = new Post();
+								post.setSn(obj.getInt("sn"));
 								post.setUserId(obj.getInt("user_id"));
 								post.setfirstName(obj.getString("firstName"));
 								post.setlastName(obj.getString("lastName"));

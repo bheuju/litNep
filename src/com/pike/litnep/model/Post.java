@@ -1,6 +1,7 @@
 package com.pike.litnep.model;
 
 public class Post {
+	private int sn;
 	private int userId;
 	private String firstName;
 	private String lastName;
@@ -24,6 +25,10 @@ public class Post {
 	/**
 	 * Setters
 	 */
+	public void setSn(int sn) {
+		this.sn = sn;
+	}
+	
 	public void setUserId(int userId) {
 		this.userId = userId;
 	}
@@ -55,6 +60,10 @@ public class Post {
 	/**
 	 * Getters
 	 */
+	public int getSn() {
+		return sn;
+	}
+	
 	public int getUserId() {
 		return userId;
 	}

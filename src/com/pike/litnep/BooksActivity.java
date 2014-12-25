@@ -36,7 +36,8 @@ public class BooksActivity extends ActionBarActivity {
 
 	private ArrayList<Books> mContentsList = new ArrayList<Books>();
 	private CustomListAdapterBooks dataAdapter;
-	//private ListView list;
+	// private View list;
+	private ListView list;
 	private GridView list1;
 
 	@Override
@@ -44,16 +45,18 @@ public class BooksActivity extends ActionBarActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_books);
 
-		//list = (ListView) findViewById(R.id.listBooks);
-		list1 = (GridView) findViewById(R.id.listBooks);
+		list = (ListView) findViewById(R.id.listBooks);
+		list1 = (GridView) findViewById(R.id.gridBooks);
+
+		list1.setVisibility(View.GONE);
 
 		dataAdapter = new CustomListAdapterBooks(getApplicationContext(),
 				mContentsList);
-		list1.setAdapter(dataAdapter);
+		list.setAdapter(dataAdapter);
 		jsonArrRequest();
 
 		// click listener for items
-		list1.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+		list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view,

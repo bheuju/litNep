@@ -6,8 +6,15 @@
     android:background="#f0f0f0"
     android:orientation="vertical" >
 
-    <GridView
+    <ListView
         android:id="@+id/listBooks"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:cacheColorHint="@android:color/transparent" >
+    </ListView>
+
+    <GridView
+        android:id="@+id/gridBooks"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:columnWidth="150dp"
