@@ -88,30 +88,6 @@ public class FragmentTab2 extends Fragment {
 
 	private View loadMoreView;
 
-	private BroadcastReceiver onEvent = new BroadcastReceiver() {
-		public void onReceive(Context context, Intent intent) {
-			GeneralFunctions.getInstance().toast(getActivity(),
-					"Download Complete");
-			install();
-		}
-	};
-
-	public void install() {
-		// begin installation by opening new file
-		GeneralFunctions.getInstance().toast(getActivity(),
-				"Trying to install new file from downloads..");
-		File root = Environment
-				.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
-		String path = root.toString() + "/litNep.apk";
-		
-		Intent i = new Intent();
-		i.setAction(Intent.ACTION_VIEW);
-		i.setDataAndType(Uri.fromFile(new File(path)),
-				"application/vnd.android.package-archive");
-		Log.e("Installing", "About to install new .apk from " + path);
-		getActivity().startActivity(i);
-	}
-
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
@@ -208,19 +184,6 @@ public class FragmentTab2 extends Fragment {
 		// TODO: and add to mContentsList
 
 		return v;
-	}
-
-	@Override
-	public void onResume() {
-		super.onResume();
-		IntentFilter f = new IntentFilter(Updater.ACTION_COMPLETE);
-		getActivity().registerReceiver(onEvent, f);
-	}
-
-	@Override
-	public void onPause() {
-		getActivity().unregisterReceiver(onEvent);
-		super.onPause();
 	}
 
 	// Automatically called when user long-clicks ListView items

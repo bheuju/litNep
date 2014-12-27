@@ -27,7 +27,7 @@
             android:uiOptions="splitActionBarWhenNarrow" >
             <meta-data
                 android:name="android.support.UI_OPTIONS"
-                android:value="splitActionBarWhenNarrow" />
+                android:value="splitActionBarWhenNarrow" />
             -->
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -92,9 +92,16 @@
             android:name=".Updater"
             android:label="@string/title_activity_update" >
         </activity>
-        
-        <service android:enabled="true" android:name="com.pike.litnep.Updater"></service>
-        
+
+        <service
+            android:name=".Updater"
+            android:enabled="true" >
+        </service>
+
+        <activity
+            android:name=".UpdateActivity"
+            android:label="@string/title_activity_update" >
+        </activity>
     </application>
 
 </manifest>

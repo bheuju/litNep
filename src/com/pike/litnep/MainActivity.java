@@ -266,7 +266,7 @@ public class MainActivity extends ActionBarActivity implements
 	}
 
 	private void openCheckUpdate() {
-		GeneralFunctions.getInstance().checkUpdate(getApplicationContext());
+		startActivity(new Intent(this, UpdateActivity.class));
 	}
 
 	private void openSettings() {
