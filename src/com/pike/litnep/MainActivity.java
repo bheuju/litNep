@@ -228,6 +228,7 @@ public class MainActivity extends ActionBarActivity implements
 
 	private void openCompose() {
 		Intent composeActivity = new Intent(this, ComposeActivity.class);
+		composeActivity.putExtra("tag", "compose");
 		composeActivity.putExtra("userId", userId);
 		startActivity(composeActivity);
 	}

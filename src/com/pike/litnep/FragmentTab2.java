@@ -54,6 +54,10 @@ public class FragmentTab2 extends Fragment {
 	public int fragmentId;
 
 	private int postSn = 0;
+	private int userId = 0;
+	private String title;
+	private String content;
+
 	private MainActivity act = new MainActivity();
 
 	private boolean delete = false;
@@ -197,8 +201,10 @@ public class FragmentTab2 extends Fragment {
 			Post post = (Post) dataAdapter.getItem(info.position);
 			menu.setHeaderTitle(post.getTitle());
 
-			int userId = post.getUserId();
+			userId = post.getUserId();
 			postSn = post.getSn();
+			title = post.getTitle();
+			content = post.getContent();
 
 			item.put("edit", "Edit");
 			item.put("delete", "Delete");
@@ -265,10 +271,24 @@ public class FragmentTab2 extends Fragment {
 
 	/**
 	 * General Post Functions
+	 * 
 	 */
 	public void doEdit() {
 		GeneralFunctions.getInstance().toast(getActivity(), "Edit");
-		// TODO: Edit function: load to compose
+		Intent edit = new Intent(getActivity(), ComposeActivity.class);
+		edit.putExtra("tag", "edit");
+		edit.putExtra("userId", userId);
+		edit.putExtra("sn", postSn);
+		edit.putExtra("title", title);
+		edit.putExtra("content", content);
+
+		Log.d("SENT", "SENT");
+		Log.d("sn", "" + postSn);
+		Log.d("userid", "" + userId);
+		Log.d("title", title);
+		Log.d("content", content);
+
+		startActivity(edit);
 	}
 
 	public void doDelete() {
@@ -354,6 +374,7 @@ public class FragmentTab2 extends Fragment {
 								JSONObject obj = (JSONObject) response.get(i);
 
 								Post post = new Post();
+								post.setSn(obj.getInt("sn"));
 								post.setUserId(obj.getInt("user_id"));
 								post.setfirstName(obj.getString("firstName"));
 								post.setlastName(obj.getString("lastName"));

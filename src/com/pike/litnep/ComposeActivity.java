@@ -23,35 +23,63 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 public class ComposeActivity extends ActionBarActivity {
 
+	private String tag;
+
 	private EditText etTitle, etContent;
 	private Button btnSave, btnPost;
+	private TextView tvTitle;
 
 	private String url = "http://pike.comlu.com/extra/compose.php";
+	private String urlEdit = "http://pike.comlu.com/extra/update.php";
 	private ProgressDialog pDialog;
 
 	private int userId;
-	private String title, content;
+	private int postSn;
+	private String title = "";
+	private String content = "";
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_compose);
 
-		Bundle extras = getIntent().getExtras();
-		if (extras != null) {
-			userId = extras.getInt("userId");
-		}
-
 		etTitle = (EditText) findViewById(R.id.etTitle);
 		etContent = (EditText) findViewById(R.id.etContent);
 		btnPost = (Button) findViewById(R.id.btnPost);
+		tvTitle = (TextView) findViewById(R.id.tvTitle);
 
 		pDialog = new ProgressDialog(this);
 		pDialog.setMessage("Please wait...");
 		pDialog.setCancelable(false);
+
+		Bundle extras = getIntent().getExtras();
+		if (extras != null) {
+			// userId always needed
+			userId = extras.getInt("userId");
+			if ((tag = extras.getString("tag")).equals("edit")) {
+				// This is edit
+				getSupportActionBar().setTitle("Edit");
+				tvTitle.setText("Edit");
+				postSn = extras.getInt("sn");
+				title = extras.getString("title");
+				content = extras.getString("content");
+				etTitle.setText(title);
+				etContent.setText(content);
+			} else if ((tag = extras.getString("tag")).equals("compose")) {
+				// This is compose
+				getSupportActionBar().setTitle("Compose");
+				tvTitle.setText("Compose");
+			}
+			Log.d("GOT", "GOT");
+			Log.d("sn", "" + postSn);
+			Log.d("userid", "" + userId);
+			Log.d("title", title);
+			Log.d("content", content);
+		}
 
 		btnPost.setOnClickListener(new View.OnClickListener() {
 
@@ -61,7 +89,11 @@ public class ComposeActivity extends ActionBarActivity {
 				title = etTitle.getText().toString();
 				content = etContent.getText().toString();
 				if (validateInput()) {
-					postContents();
+					if (tag.equals("edit")) {
+						editContents();
+					} else if (tag.equals("compose")) {
+						postContents();
+					}
 				}
 			}
 		});
@@ -141,6 +173,52 @@ public class ComposeActivity extends ActionBarActivity {
 			@Override
 			protected Map<String, String> getParams() {
 				Map<String, String> params = new HashMap<String, String>();
+				params.put("user_id", String.valueOf(userId));
+				params.put("title", title);
+				params.put("content", content);
+				return params;
+			}
+		};
+		// add to request queue
+		AppController.getInstance().addToRequestQueue(req);
+	}
+
+	public void editContents() {
+		showpDialog();
+		StringRequest req = new StringRequest(Method.POST, urlEdit,
+				new Response.Listener<String>() {
+					@Override
+					public void onResponse(String response) {
+						Log.d("Response: ", response.toString());
+
+						GeneralFunctions.getInstance().toast(
+								getApplicationContext(), "Success");
+
+						hidepDialog();
+						finish();
+					}
+				}, new Response.ErrorListener() {
+					@Override
+					public void onErrorResponse(VolleyError error) {
+						// GeneralFunctions.getInstance().toast(getApplicationContext(),
+						// error.toString());
+						if (error instanceof NoConnectionError) {
+							GeneralFunctions.getInstance().toast(
+									getApplicationContext(),
+									"Connection Error !");
+						}
+						hidepDialog();
+					}
+				}) {
+			@Override
+			protected Map<String, String> getParams() {
+				Map<String, String> params = new HashMap<String, String>();
+				Log.d("PARAMS", "PARAMS");
+				Log.d("sn", "" + postSn);
+				Log.d("userid", "" + userId);
+				Log.d("title", title);
+				Log.d("content", content);
+				params.put("sn", String.valueOf(postSn));
 				params.put("user_id", String.valueOf(userId));
 				params.put("title", title);
 				params.put("content", content);
