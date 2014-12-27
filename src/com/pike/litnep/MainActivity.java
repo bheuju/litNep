@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
@@ -206,6 +207,9 @@ public class MainActivity extends ActionBarActivity implements
 		case R.id.action_feedback:
 			openFeedback();
 			return true;
+		case R.id.action_checkupdate:
+			openCheckUpdate();
+			return true;
 		case R.id.action_settings:
 			openSettings();
 			return true;
@@ -259,6 +263,10 @@ public class MainActivity extends ActionBarActivity implements
 	private void openFeedback() {
 		GeneralFunctions.getInstance().toast(getApplicationContext(),
 				"Under Construction");
+	}
+
+	private void openCheckUpdate() {
+		GeneralFunctions.getInstance().checkUpdate(getApplicationContext());
 	}
 
 	private void openSettings() {

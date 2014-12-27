@@ -1,5 +1,6 @@
 package com.pike.litnep;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -9,9 +10,13 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.ProgressDialog;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.util.ArrayMap;
@@ -29,6 +34,7 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.NoConnectionError;
 import com.android.volley.Request.Method;
@@ -81,6 +87,30 @@ public class FragmentTab2 extends Fragment {
 	private boolean firstRun = true;
 
 	private View loadMoreView;
+
+	private BroadcastReceiver onEvent = new BroadcastReceiver() {
+		public void onReceive(Context context, Intent intent) {
+			GeneralFunctions.getInstance().toast(getActivity(),
+					"Download Complete");
+			install();
+		}
+	};
+
+	public void install() {
+		// begin installation by opening new file
+		GeneralFunctions.getInstance().toast(getActivity(),
+				"Trying to install new file from downloads..");
+		File root = Environment
+				.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
+		String path = root.toString() + "/litNep.apk";
+		
+		Intent i = new Intent();
+		i.setAction(Intent.ACTION_VIEW);
+		i.setDataAndType(Uri.fromFile(new File(path)),
+				"application/vnd.android.package-archive");
+		Log.e("Installing", "About to install new .apk from " + path);
+		getActivity().startActivity(i);
+	}
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -178,6 +208,19 @@ public class FragmentTab2 extends Fragment {
 		// TODO: and add to mContentsList
 
 		return v;
+	}
+
+	@Override
+	public void onResume() {
+		super.onResume();
+		IntentFilter f = new IntentFilter(Updater.ACTION_COMPLETE);
+		getActivity().registerReceiver(onEvent, f);
+	}
+
+	@Override
+	public void onPause() {
+		getActivity().unregisterReceiver(onEvent);
+		super.onPause();
 	}
 
 	// Automatically called when user long-clicks ListView items
@@ -348,7 +391,6 @@ public class FragmentTab2 extends Fragment {
 								JSONObject obj = (JSONObject) response.get(i);
 
 								Post post = new Post();
-								post.setSn(obj.getInt("sn"));
 								post.setUserId(obj.getInt("user_id"));
 								post.setfirstName(obj.getString("firstName"));
 								post.setlastName(obj.getString("lastName"));
