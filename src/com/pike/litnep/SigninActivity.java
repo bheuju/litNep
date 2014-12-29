@@ -6,6 +6,7 @@ import java.util.Map;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.android.volley.NoConnectionError;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
@@ -31,6 +32,7 @@ import android.widget.TextView;
 public class SigninActivity extends ActionBarActivity {
 
 	private Button btnSignUp, btnSignIn;
+	private Button btnForgotDetails;
 	private EditText etEmail, etPass;
 	private TextView tvLoginError;
 
@@ -50,6 +52,7 @@ public class SigninActivity extends ActionBarActivity {
 	private JSONObject jsonObj;
 
 	private static String url = "http://pike.comlu.com/users/";
+	private String urlReset = "http://pike.comlu.com/extra/reset.php";
 
 	private static String TAG = MainActivity.class.getSimpleName();
 
@@ -64,6 +67,7 @@ public class SigninActivity extends ActionBarActivity {
 
 		btnSignUp = (Button) findViewById(R.id.btnSignUp);
 		btnSignIn = (Button) findViewById(R.id.btnSignIn);
+		btnForgotDetails = (Button) findViewById(R.id.btnForgotDetails);
 
 		etEmail = (EditText) findViewById(R.id.etEmail);
 		etPass = (EditText) findViewById(R.id.etPass);
@@ -101,6 +105,21 @@ public class SigninActivity extends ActionBarActivity {
 			}
 		});
 
+		btnForgotDetails.setOnClickListener(new View.OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				email = etEmail.getText().toString();
+				if (!email.equals("")) {
+					// send email to account with new password
+					resetPass();
+				} else {
+					GeneralFunctions.getInstance().toast(
+							getApplicationContext(), "Enter email... !");
+				}
+			}
+		});
+
 	}
 
 	@Override
@@ -123,7 +142,7 @@ public class SigninActivity extends ActionBarActivity {
 	}
 
 	/**
-	 * 
+	 * Validate input fields
 	 * @return
 	 */
 	public boolean validateInput() {
@@ -221,6 +240,42 @@ public class SigninActivity extends ActionBarActivity {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+
+	public void resetPass() {
+		StringRequest req = new StringRequest(Method.POST, urlReset,
+				new Response.Listener<String>() {
+					@Override
+					public void onResponse(String response) {
+						Log.d("Response: ", response.toString());
+
+						GeneralFunctions.getInstance().toast(
+								getApplicationContext(),
+								"Check you email !");
+						finish();
+					}
+				}, new Response.ErrorListener() {
+					@Override
+					public void onErrorResponse(VolleyError error) {
+						// GeneralFunctions.getInstance().toast(getApplicationContext(),
+						// error.toString());
+						if (error instanceof NoConnectionError) {
+							GeneralFunctions.getInstance().toast(
+									getApplicationContext(),
+									"Connection Error !");
+						}
+						btnForgotDetails.setEnabled(true);
+					}
+				}) {
+			@Override
+			protected Map<String, String> getParams() {
+				Map<String, String> params = new HashMap<String, String>();
+				params.put("to", email);
+				return params;
+			}
+		};
+		// add to request queue
+		AppController.getInstance().addToRequestQueue(req);
 	}
 
 	private void showpDialog() {
