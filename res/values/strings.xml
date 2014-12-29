@@ -33,5 +33,6 @@
     <string name="action_feedback">Send us feedback</string>
     <string name="title_activity_account">Account</string>
     <string name="title_activity_update">Update</string>
+    <string name="title_activity_feedback">Send Us Feedback</string>
 
 </resources>

@@ -47,7 +47,7 @@ public class MainActivity extends ActionBarActivity implements
 	private ArrayList<String> arrayList;
 
 	// if signIn
-	boolean isLoggedIn = false;
+	public static boolean isLoggedIn = false;
 	private String userName = null;
 
 	private static int userId;
@@ -263,7 +263,8 @@ public class MainActivity extends ActionBarActivity implements
 
 	private void openFeedback() {
 		GeneralFunctions.getInstance().toast(getApplicationContext(),
-				"Under Construction");
+				"Feedback");
+		startActivity(new Intent(this, FeedbackActivity.class));
 	}
 
 	private void openCheckUpdate() {

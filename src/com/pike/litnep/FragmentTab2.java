@@ -53,7 +53,7 @@ public class FragmentTab2 extends Fragment {
 
 	public int fragmentId;
 
-	private int postSn = 0;
+	private int postId = 0;
 	private int userId = 0;
 	private String title;
 	private String content;
@@ -137,6 +137,10 @@ public class FragmentTab2 extends Fragment {
 				singlePostActivity.putExtra("title", post.getTitle());
 				singlePostActivity.putExtra("content", post.getContent());
 				singlePostActivity.putExtra("created_at", post.getCreatedAt());
+				singlePostActivity.putExtra("post_id", post.getPostId());
+				singlePostActivity.putExtra("user_id", post.getUserId());
+				singlePostActivity.putExtra("like_value", post.getLikeValue());
+				
 				startActivity(singlePostActivity);
 			}
 
@@ -202,7 +206,8 @@ public class FragmentTab2 extends Fragment {
 			menu.setHeaderTitle(post.getTitle());
 
 			userId = post.getUserId();
-			postSn = post.getSn();
+			postId = post.getPostId();
+			// title and contents are required for editing
 			title = post.getTitle();
 			content = post.getContent();
 
@@ -278,12 +283,12 @@ public class FragmentTab2 extends Fragment {
 		Intent edit = new Intent(getActivity(), ComposeActivity.class);
 		edit.putExtra("tag", "edit");
 		edit.putExtra("userId", userId);
-		edit.putExtra("sn", postSn);
+		edit.putExtra("post_id", postId);
 		edit.putExtra("title", title);
 		edit.putExtra("content", content);
 
 		Log.d("SENT", "SENT");
-		Log.d("sn", "" + postSn);
+		Log.d("post_id", "" + postId);
 		Log.d("userid", "" + userId);
 		Log.d("title", title);
 		Log.d("content", content);
@@ -294,9 +299,9 @@ public class FragmentTab2 extends Fragment {
 	public void doDelete() {
 		GeneralFunctions.getInstance().toast(getActivity(), "Delete");
 
-		final int userId = act.getUserId();
+		userId = act.getUserId();
 
-		Log.e("Check Delete data", "UserID: " + userId + ", sn: " + postSn);
+		Log.e("Check Delete data", "UserID: " + userId + ", post_id: " + postId);
 
 		StringRequest req = new StringRequest(Method.POST, urlDelete,
 				new Response.Listener<String>() {
@@ -322,7 +327,7 @@ public class FragmentTab2 extends Fragment {
 			protected Map<String, String> getParams() {
 				Map<String, String> params = new HashMap<String, String>();
 				params.put("user_id", String.valueOf(userId));
-				params.put("sn", String.valueOf(postSn));
+				params.put("post_id", String.valueOf(postId));
 				return params;
 			}
 		};
@@ -374,7 +379,7 @@ public class FragmentTab2 extends Fragment {
 								JSONObject obj = (JSONObject) response.get(i);
 
 								Post post = new Post();
-								post.setSn(obj.getInt("sn"));
+								post.setPostId(obj.getInt("post_id"));
 								post.setUserId(obj.getInt("user_id"));
 								post.setfirstName(obj.getString("firstName"));
 								post.setlastName(obj.getString("lastName"));
@@ -383,6 +388,7 @@ public class FragmentTab2 extends Fragment {
 								post.setTitle(obj.getString("title"));
 								post.setContent(obj.getString("content"));
 								post.setCreatedAt(obj.getString("created_at"));
+								post.setLikeValue(obj.getInt("like_value"));
 
 								mContentsList.add(post);
 								maxPost++;

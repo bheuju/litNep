@@ -69,6 +69,8 @@ public class CustomListAdapterPost extends BaseAdapter {
 				.findViewById(R.id.tvCreatedAt);
 		TextView contents = (TextView) convertView
 				.findViewById(R.id.tvContents);
+		TextView likeValue = (TextView) convertView
+				.findViewById(R.id.tvLikeValue);
 
 		// getting post data for the row
 		Post p = (Post) postItems.get(position);
@@ -83,20 +85,19 @@ public class CustomListAdapterPost extends BaseAdapter {
 		String strTitle = p.getTitle();
 		String strContent = p.getContent();
 		String strCreatedAt = p.getCreatedAt();
+		int intLikeValue = p.getLikeValue();
 
 		// parsing date to suitable format
 		strCreatedAt = GeneralFunctions.getInstance().dateParser(strCreatedAt,
 				"MMM dd");
-		// truncating content
-		if (strContent.length() > 100) {
-			strContent = strContent.substring(0, 100) + "...";
-		}
 
 		userName.setText(strfirstName + " " + strlastName);
 		title.setText(strTitle);
 		contents.setText(strContent);
 		createdAt.setText(strCreatedAt);
 		thumbnail.setImageUrl(strThumbnailUrl, imageLoader);
+		likeValue.setText((intLikeValue != 0) ? String.valueOf(intLikeValue)
+				: "");
 
 		return convertView;
 	}

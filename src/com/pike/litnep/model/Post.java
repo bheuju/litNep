@@ -1,12 +1,13 @@
 package com.pike.litnep.model;
 
 public class Post {
-	private int sn;
+	private int post_id;
 	private int userId;
 	private String firstName;
 	private String lastName;
 	private String title, content;
 	private String created_at;
+	private int likeValue;
 
 	private String thumbnailUrl;
 
@@ -25,10 +26,10 @@ public class Post {
 	/**
 	 * Setters
 	 */
-	public void setSn(int sn) {
-		this.sn = sn;
+	public void setPostId(int post_id) {
+		this.post_id = post_id;
 	}
-	
+
 	public void setUserId(int userId) {
 		this.userId = userId;
 	}
@@ -57,13 +58,17 @@ public class Post {
 		this.created_at = created_at;
 	}
 
+	public void setLikeValue(int likeValue) {
+		this.likeValue = likeValue;
+	}
+
 	/**
 	 * Getters
 	 */
-	public int getSn() {
-		return sn;
+	public int getPostId() {
+		return post_id;
 	}
-	
+
 	public int getUserId() {
 		return userId;
 	}
@@ -90,5 +95,9 @@ public class Post {
 
 	public String getCreatedAt() {
 		return created_at;
+	}
+
+	public int getLikeValue() {
+		return likeValue;
 	}
 }

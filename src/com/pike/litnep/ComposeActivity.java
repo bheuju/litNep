@@ -38,7 +38,7 @@ public class ComposeActivity extends ActionBarActivity {
 	private ProgressDialog pDialog;
 
 	private int userId;
-	private int postSn;
+	private int postId;
 	private String title = "";
 	private String content = "";
 
@@ -64,7 +64,7 @@ public class ComposeActivity extends ActionBarActivity {
 				// This is edit
 				getSupportActionBar().setTitle("Edit");
 				tvTitle.setText("Edit");
-				postSn = extras.getInt("sn");
+				postId = extras.getInt("post_id");
 				title = extras.getString("title");
 				content = extras.getString("content");
 				etTitle.setText(title);
@@ -74,11 +74,6 @@ public class ComposeActivity extends ActionBarActivity {
 				getSupportActionBar().setTitle("Compose");
 				tvTitle.setText("Compose");
 			}
-			Log.d("GOT", "GOT");
-			Log.d("sn", "" + postSn);
-			Log.d("userid", "" + userId);
-			Log.d("title", title);
-			Log.d("content", content);
 		}
 
 		btnPost.setOnClickListener(new View.OnClickListener() {
@@ -213,12 +208,7 @@ public class ComposeActivity extends ActionBarActivity {
 			@Override
 			protected Map<String, String> getParams() {
 				Map<String, String> params = new HashMap<String, String>();
-				Log.d("PARAMS", "PARAMS");
-				Log.d("sn", "" + postSn);
-				Log.d("userid", "" + userId);
-				Log.d("title", title);
-				Log.d("content", content);
-				params.put("sn", String.valueOf(postSn));
+				params.put("post_id", String.valueOf(postId));
 				params.put("user_id", String.valueOf(userId));
 				params.put("title", title);
 				params.put("content", content);
