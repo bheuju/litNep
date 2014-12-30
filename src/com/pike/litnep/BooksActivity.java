@@ -23,6 +23,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ListView;
 
@@ -33,6 +34,8 @@ public class BooksActivity extends ActionBarActivity {
 	private String urlBase = "http://pike.comlu.com/extra/books.php";
 	private String url = "";
 	private int start = 0, count = 10;
+
+	private Button btnTryAgain;
 
 	private ArrayList<Books> mContentsList = new ArrayList<Books>();
 	private CustomListAdapterBooks dataAdapter;
@@ -111,6 +114,7 @@ public class BooksActivity extends ActionBarActivity {
 					@Override
 					public void onResponse(JSONArray response) {
 						Log.d(TAG, response.toString());
+						setContentView(R.layout.activity_books);
 						try {
 							// parsing json array response
 							// loop through each json object
@@ -158,12 +162,14 @@ public class BooksActivity extends ActionBarActivity {
 						}
 						// tvNoConMsg.setVisibility(View.VISIBLE);
 						// noConMsg.setVisibility(View.VISIBLE);
-
+						setContentView(R.layout.no_con_msg);
+						// btnTryAgain = (Button)
+						// findViewById(R.id.btnTryAgain);
 					}
 				});
-
 		// add request to request queue, and add tag for cancel if necessary
 		AppController.getInstance().addToRequestQueue(req, "req");
+
 	}
 
 	public void refresh() {

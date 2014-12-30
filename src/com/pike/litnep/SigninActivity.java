@@ -14,6 +14,7 @@ import com.android.volley.Request.Method;
 import com.android.volley.toolbox.StringRequest;
 import com.pike.litnep.app.AppController;
 import com.pike.litnep.library.UserFunctions;
+import com.pike.litnep.model.User;
 import com.pike.litnep.util.GeneralFunctions;
 
 import android.app.ProgressDialog;
@@ -143,6 +144,7 @@ public class SigninActivity extends ActionBarActivity {
 
 	/**
 	 * Validate input fields
+	 * 
 	 * @return
 	 */
 	public boolean validateInput() {
@@ -230,6 +232,11 @@ public class SigninActivity extends ActionBarActivity {
 							json.getString(KEY_LASTNAME));
 					mainActivity.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 					startActivity(mainActivity);
+
+					User.getInstance().setUser(json.getInt(KEY_ID),
+							json.getString(KEY_FIRSTNAME),
+							json.getString(KEY_LASTNAME), email, "", "");
+
 					// close signinActivity
 					finish();
 				} else {
@@ -250,8 +257,7 @@ public class SigninActivity extends ActionBarActivity {
 						Log.d("Response: ", response.toString());
 
 						GeneralFunctions.getInstance().toast(
-								getApplicationContext(),
-								"Check you email !");
+								getApplicationContext(), "Check you email !");
 						finish();
 					}
 				}, new Response.ErrorListener() {

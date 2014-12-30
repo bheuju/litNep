@@ -34,5 +34,6 @@
     <string name="title_activity_account">Account</string>
     <string name="title_activity_update">Update</string>
     <string name="title_activity_feedback">Send Us Feedback</string>
+    <string name="title_activity_user_profile">Profile</string>
 
 </resources>

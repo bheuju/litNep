@@ -1,4 +1,4 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -6,15 +6,83 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.pike.litnep.AccountActivity" >
+    tools:context="com.pike.litnep.UserProfile" >
 
-    <TextView
+    <LinearLayout
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:gravity="center"
-        android:text="Under Construction !"
-        android:textColor="#DDD"
-        android:textSize="40sp"
-        android:textStyle="bold" />
+        android:layout_height="wrap_content"
+        android:orientation="vertical" >
 
-</RelativeLayout>
+        <ImageButton
+            android:id="@+id/btnImage"
+            android:layout_width="fill_parent"
+            android:layout_height="150dp"
+            android:layout_marginBottom="20dp"
+            android:background="@drawable/box"
+            android:scaleType="centerCrop"
+            android:src="@drawable/thumbnail_default" />
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:layout_marginLeft="20dp"
+            android:orientation="vertical" >
+
+            <TextView
+                android:id="@+id/tvName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:text="First Last"
+                android:textColor="#9c5118"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tvEmail"
+                android:layout_width="fill_parent"
+                android:layout_height="30dp"
+                android:gravity="left"
+                android:text="name@example.com"
+                android:textColor="#18639c"
+                android:textSize="16sp" />
+
+            <Button
+                android:id="@+id/btnPass"
+                android:layout_width="fill_parent"
+                android:layout_height="25dp"
+                android:background="#00000000"
+                android:gravity="left"
+                android:text="********"
+                android:textColor="#AAA"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/tvPhone"
+                android:layout_width="fill_parent"
+                android:layout_height="25dp"
+                android:gravity="left"
+                android:text="977-9849507004"
+                android:textColor="#18639c"
+                android:textSize="14sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:orientation="vertical" >
+
+            <TextView
+                android:id="@+id/tvAddress"
+                android:layout_width="fill_parent"
+                android:layout_height="25dp"
+                android:gravity="left"
+                android:text="Kathmandu, Nepal"
+                android:textColor="#006b3c"
+                android:textSize="14sp" />
+        </LinearLayout>
+    </LinearLayout>
+
+</ScrollView>
