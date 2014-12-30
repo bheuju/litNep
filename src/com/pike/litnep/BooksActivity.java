@@ -114,7 +114,7 @@ public class BooksActivity extends ActionBarActivity {
 					@Override
 					public void onResponse(JSONArray response) {
 						Log.d(TAG, response.toString());
-						setContentView(R.layout.activity_books);
+						// setContentView(R.layout.activity_books);
 						try {
 							// parsing json array response
 							// loop through each json object
@@ -127,6 +127,7 @@ public class BooksActivity extends ActionBarActivity {
 								book.setTitle(obj.getString("title"));
 								book.setAuthor(obj.getString("author"));
 								book.setYear(obj.getString("year"));
+								book.setReview(obj.getString("review"));
 
 								mContentsList.add(book);
 								// maxPost++;
@@ -162,7 +163,7 @@ public class BooksActivity extends ActionBarActivity {
 						}
 						// tvNoConMsg.setVisibility(View.VISIBLE);
 						// noConMsg.setVisibility(View.VISIBLE);
-						setContentView(R.layout.no_con_msg);
+						// setContentView(R.layout.no_con_msg);
 						// btnTryAgain = (Button)
 						// findViewById(R.id.btnTryAgain);
 					}

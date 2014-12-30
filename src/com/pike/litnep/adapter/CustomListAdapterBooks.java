@@ -10,6 +10,7 @@ import com.pike.litnep.model.Books;
 import com.pike.litnep.util.GeneralFunctions;
 
 import android.content.Context;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -58,6 +59,7 @@ public class CustomListAdapterBooks extends BaseAdapter {
 		TextView title = (TextView) convertView.findViewById(R.id.tvTitle);
 		TextView author = (TextView) convertView.findViewById(R.id.tvAuthor);
 		TextView year = (TextView) convertView.findViewById(R.id.tvYear);
+		TextView review = (TextView) convertView.findViewById(R.id.tvReview);
 
 		Books book = (Books) bookItems.get(position);
 
@@ -65,11 +67,20 @@ public class CustomListAdapterBooks extends BaseAdapter {
 		String strTitle = book.getTitle();
 		String strAuthor = book.getAuthor();
 		String strYear = book.getYear();
+		String strReview = book.getReview();
 
 		imgCover.setImageUrl(strCoverUrl, imageLoader);
 		title.setText(strTitle);
 		author.setText(strAuthor);
 		year.setText(strYear);
+
+		if (strReview.equals("")) {
+			review.setGravity(Gravity.CENTER);
+			review.setText("No Review Available !");
+		} else {
+			review.setGravity(Gravity.NO_GRAVITY);
+			review.setText(strReview);
+		}
 
 		return convertView;
 	}

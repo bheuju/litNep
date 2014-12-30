@@ -6,6 +6,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.net.Uri;
@@ -40,6 +41,9 @@ public class UpdateActivity extends ActionBarActivity {
 	private static ProgressBar progressBar;
 	private static int progressStatus;
 
+	SharedPreferences prefs;
+	private static final String PREF_DOWNLOAD_COMPLETE = "downloadComplete";
+
 	private static boolean error = false;
 	private static String errorTxt;
 
@@ -47,7 +51,7 @@ public class UpdateActivity extends ActionBarActivity {
 
 	private Handler handler = new Handler();
 
-	private String urlSrc = "http://pike.comlu.com/src/litNep.apk";
+	private String urlSrc = "http://pike.comlu.com/src/akshyar.apk";
 	private String urlSrcVersion = "http://pike.comlu.com/src/version";
 
 	private BroadcastReceiver onEvent = new BroadcastReceiver() {
@@ -70,34 +74,6 @@ public class UpdateActivity extends ActionBarActivity {
 		tvError = (TextView) findViewById(R.id.tvError);
 
 		btnInstallUpdate.setVisibility(View.GONE);
-
-		btnCheckUpdate.setOnClickListener(new View.OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				tvError.setText("");
-				btnCheckUpdate.setText("Retry");
-
-				error = false;
-				if (!downloadComplete) {
-					checkVersion();
-				} else {
-					progressStatus = 100;
-					btnInstallUpdate.setVisibility(View.VISIBLE);
-				}
-
-				btnCheckUpdate.setEnabled(false);
-			}
-		});
-
-		btnInstallUpdate.setOnClickListener(new View.OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				install();
-			}
-		});
 
 		// update progress bar and progress text
 		new Thread(new Runnable() {
@@ -124,11 +100,43 @@ public class UpdateActivity extends ActionBarActivity {
 				}
 			}
 		}).start();
+
+		btnCheckUpdate.setOnClickListener(new View.OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				tvError.setText("");
+				btnCheckUpdate.setText("Retry");
+
+				error = false;
+				if (!downloadComplete) {
+					checkVersion();
+				} else {
+					progressStatus = 100;
+					progressBar.setProgress(progressStatus);
+					tvProgressStatus.setText("100/100");
+					btnInstallUpdate.setVisibility(View.VISIBLE);
+				}
+
+				btnCheckUpdate.setEnabled(false);
+			}
+		});
+
+		btnInstallUpdate.setOnClickListener(new View.OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				install();
+			}
+		});
+
 	}
 
 	@Override
 	public void onResume() {
 		super.onResume();
+
 		IntentFilter f = new IntentFilter(Updater.ACTION_COMPLETE);
 		registerReceiver(onEvent, f);
 	}
@@ -136,6 +144,10 @@ public class UpdateActivity extends ActionBarActivity {
 	@Override
 	public void onPause() {
 		unregisterReceiver(onEvent);
+		if (prefs != null) {
+			prefs.edit().putBoolean(PREF_DOWNLOAD_COMPLETE, downloadComplete)
+					.commit();
+		}
 		super.onPause();
 	}
 
@@ -183,6 +195,8 @@ public class UpdateActivity extends ActionBarActivity {
 									"Version Retrived: " + response);
 
 							if (newVersionCode > currentVersionCode) {
+								// new version found on server
+								// download updated app
 								updateApp();
 							} else {
 								GeneralFunctions.getInstance().toast(
@@ -216,6 +230,9 @@ public class UpdateActivity extends ActionBarActivity {
 
 	public void updateApp() {
 		// TODO: add update instructions
+		if (downloadComplete) {
+			return;
+		}
 		Intent intent = new Intent(this, Updater.class);
 		intent.setData(Uri.parse(urlSrc));
 		startService(intent);

@@ -6,15 +6,18 @@ public class Books {
 	private String title;
 	private String author;
 	private String year;
+	private String review;
 
 	public Books() {
 	}
 
-	public Books(String coverUrl, String title, String author, String year) {
+	public Books(String coverUrl, String title, String author, String year,
+			String review) {
 		this.coverUrl = coverUrl;
 		this.title = title;
 		this.author = author;
 		this.year = year;
+		this.review = review;
 	}
 
 	/**
@@ -40,6 +43,10 @@ public class Books {
 		this.year = year;
 	}
 
+	public void setReview(String review) {
+		this.review = review;
+	}
+
 	/**
 	 * Getters
 	 */
@@ -61,5 +68,9 @@ public class Books {
 
 	public String getYear() {
 		return year;
+	}
+
+	public String getReview() {
+		return review;
 	}
 }

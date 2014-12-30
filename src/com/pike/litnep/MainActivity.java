@@ -1,16 +1,23 @@
 package com.pike.litnep;
 
+import java.security.acl.NotOwnerException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import android.annotation.SuppressLint;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.app.NotificationCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
@@ -24,7 +31,13 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import com.android.volley.NoConnectionError;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.Request.Method;
+import com.android.volley.toolbox.StringRequest;
 import com.pike.litnep.adapter.TabsPagerAdapter;
+import com.pike.litnep.app.AppController;
 import com.pike.litnep.util.GeneralFunctions;
 
 public class MainActivity extends ActionBarActivity implements
@@ -52,6 +65,8 @@ public class MainActivity extends ActionBarActivity implements
 
 	private static int userId;
 
+	private String urlNotification = "http://pike.comlu.com/notification/";
+
 	public int getUserId() {
 		return userId;
 	}
@@ -68,6 +83,8 @@ public class MainActivity extends ActionBarActivity implements
 			userName = extras.getString("firstName") + " "
 					+ extras.getString("lastName");
 		}
+
+		checkNotification();
 
 		mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 		mDrawerList = (ListView) findViewById(R.id.left_drawer);
@@ -213,6 +230,8 @@ public class MainActivity extends ActionBarActivity implements
 		case R.id.action_settings:
 			openSettings();
 			return true;
+		case R.id.action_exit:
+			finish();
 		default:
 			return super.onOptionsItemSelected(item);
 		}
@@ -231,6 +250,58 @@ public class MainActivity extends ActionBarActivity implements
 		composeActivity.putExtra("tag", "compose");
 		composeActivity.putExtra("userId", userId);
 		startActivity(composeActivity);
+	}
+
+	private boolean checkNotification() {
+
+		StringRequest req = new StringRequest(Method.POST, urlNotification
+				+ "check", new Response.Listener<String>() {
+			@Override
+			public void onResponse(String response) {
+				Log.d("Response: ", response);
+
+				int checkCode = Integer.parseInt(response);
+
+				if (checkCode == 1) {
+					// Notification available
+					// do something
+					Intent intent = new Intent(getApplicationContext(),
+							NotificationReceiver.class);
+					PendingIntent pIntent = PendingIntent.getActivity(
+							getApplicationContext(), 0, intent, 0);
+
+					NotificationCompat.Builder n = new NotificationCompat.Builder(
+							getApplicationContext())
+							.setSmallIcon(R.drawable.ic_launcher)
+							.setContentTitle("New notification")
+							.setContentText("akshyar")
+							.setContentIntent(pIntent).setAutoCancel(true);
+					/*
+					 * NotificationCompat.InboxStyle inboxStyle = new
+					 * NotificationCompat.InboxStyle(); String[] events = new
+					 * String[6]; events[0] = "Event 1"; events[1] = "Event 2";
+					 * events[2] = "Event 3";
+					 * inboxStyle.setBigContentTitle("More details"); for (int i
+					 * = 0; i < events.length; i++) {
+					 * inboxStyle.addLine(events[i]); } n.setStyle(inboxStyle);
+					 */
+					NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+					notificationManager.notify(001, n.build());
+				}
+			}
+		}, new Response.ErrorListener() {
+			@Override
+			public void onErrorResponse(VolleyError error) {
+				// GeneralFunctions.getInstance().toast(getApplicationContext(),
+				// error.toString());
+				if (error instanceof NoConnectionError) {
+					GeneralFunctions.getInstance().toast(
+							getApplicationContext(), "Connection Error !");
+				}
+			}
+		});
+		AppController.getInstance().addToRequestQueue(req);
+		return false;
 	}
 
 	private void openRefresh() {
@@ -272,8 +343,7 @@ public class MainActivity extends ActionBarActivity implements
 	}
 
 	private void openSettings() {
-		GeneralFunctions.getInstance().toast(getApplicationContext(),
-				"Under Construction");
+		startActivity(new Intent(this, Prefs.class));
 	}
 
 	/**

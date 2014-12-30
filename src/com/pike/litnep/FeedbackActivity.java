@@ -42,10 +42,10 @@ public class FeedbackActivity extends ActionBarActivity {
 
 			@Override
 			public void onClick(View v) {
-				btnSend.setEnabled(false);
 				subject = etSubject.getText().toString();
 				message = etMessage.getText().toString();
 				if (validateInput()) {
+					btnSend.setEnabled(false);
 					sendMessage();
 				}
 
