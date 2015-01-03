@@ -82,10 +82,10 @@ public class SignupActivity extends ActionBarActivity {
 				password = etPass.getText().toString();
 				repassword = etPassRe.getText().toString();
 
-				Log.d("Sign Up", firstName);
-				Log.d("Sign Up", lastName);
-				Log.d("Sign Up", email);
-				Log.d("Sign Up", password);
+				//Log.d("Sign Up", firstName);
+				//Log.d("Sign Up", lastName);
+				//Log.d("Sign Up", email);
+				//Log.d("Sign Up", password);
 
 				// check validation of input fields
 				if (validateInput()) {
@@ -112,21 +112,23 @@ public class SignupActivity extends ActionBarActivity {
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.signup, menu);
+		getMenuInflater().inflate(R.menu.account, menu);
 		return true;
 	}
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		// Handle action bar item clicks here. The action bar will
-		// automatically handle clicks on the Home/Up button, so long
-		// as you specify a parent activity in AndroidManifest.xml.
-		int id = item.getItemId();
-		if (id == R.id.action_settings) {
+		switch (item.getItemId()) {
+		case R.id.action_settings:
+			openSettings();
 			return true;
+		default:
+			return super.onOptionsItemSelected(item);
 		}
-		return super.onOptionsItemSelected(item);
+	}
+
+	private void openSettings() {
+		startActivity(new Intent(this, Prefs.class));
 	}
 
 	/**
@@ -165,17 +167,17 @@ public class SignupActivity extends ActionBarActivity {
 				new Response.Listener<String>() {
 					@Override
 					public void onResponse(String response) {
-						Log.d("JSON Parser: ", response.toString());
+						//Log.d("JSON Parser: ", response.toString());
 						String jsonString = response.toString();
 
 						try {
 							jsonObj = new JSONObject(jsonString);
-							Log.d("JSON =>", jsonObj.toString());
+							//Log.d("JSON =>", jsonObj.toString());
 
 						} catch (Throwable t) {
-							Log.e("JSON =>",
-									"Could not parse malformed JSON: \""
-											+ jsonString + "\"");
+							//Log.e("JSON =>",
+							//		"Could not parse malformed JSON: \""
+							//				+ jsonString + "\"");
 						}
 						hidepDialog();
 						// call callback
@@ -184,7 +186,7 @@ public class SignupActivity extends ActionBarActivity {
 				}, new Response.ErrorListener() {
 					@Override
 					public void onErrorResponse(VolleyError error) {
-						VolleyLog.d(TAG, "Error: " + error.getMessage());
+						//VolleyLog.d(TAG, "Error: " + error.getMessage());
 						// GeneralFunctions.getInstance().toast(getApplicationContext(),
 						// error.toString());
 						hidepDialog();
@@ -204,7 +206,7 @@ public class SignupActivity extends ActionBarActivity {
 
 	public void checkRegisterResponse(JSONObject json) {
 		// check login response
-		Log.d("Response After sign in: ", json.toString());
+		//Log.d("Response After sign in: ", json.toString());
 		try {
 			if (json.getString(KEY_SUCCESS) != null) {
 				tvRegisterError.setText("");

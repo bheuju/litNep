@@ -1,18 +1,15 @@
 package com.pike.litnep;
 
-import java.security.acl.NotOwnerException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import android.annotation.SuppressLint;
-import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Intent;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
 import android.content.res.Configuration;
+import android.media.RingtoneManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.Fragment;
@@ -32,9 +29,9 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.android.volley.NoConnectionError;
+import com.android.volley.Request.Method;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.Request.Method;
 import com.android.volley.toolbox.StringRequest;
 import com.pike.litnep.adapter.TabsPagerAdapter;
 import com.pike.litnep.app.AppController;
@@ -258,7 +255,7 @@ public class MainActivity extends ActionBarActivity implements
 				+ "check", new Response.Listener<String>() {
 			@Override
 			public void onResponse(String response) {
-				Log.d("Response: ", response);
+				//Log.d("Response: ", response);
 
 				int checkCode = Integer.parseInt(response);
 
@@ -270,12 +267,18 @@ public class MainActivity extends ActionBarActivity implements
 					PendingIntent pIntent = PendingIntent.getActivity(
 							getApplicationContext(), 0, intent, 0);
 
-					NotificationCompat.Builder n = new NotificationCompat.Builder(
-							getApplicationContext())
-							.setSmallIcon(R.drawable.ic_launcher)
-							.setContentTitle("New notification")
-							.setContentText("akshyar")
-							.setContentIntent(pIntent).setAutoCancel(true);
+					Uri alarmSound = RingtoneManager
+							.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+					// long[] pattern = { 500, 500, 500, 500, 500 };
+					NotificationCompat.Builder builder = new NotificationCompat.Builder(
+							getApplicationContext());
+
+					builder.setSmallIcon(R.drawable.ic_launcher);
+					builder.setContentTitle("New notification");
+					builder.setContentText("akshyar");
+					// builder.setVibrate(pattern);
+					builder.setContentIntent(pIntent).setAutoCancel(true);
+					builder.setSound(alarmSound);
 					/*
 					 * NotificationCompat.InboxStyle inboxStyle = new
 					 * NotificationCompat.InboxStyle(); String[] events = new
@@ -286,7 +289,7 @@ public class MainActivity extends ActionBarActivity implements
 					 * inboxStyle.addLine(events[i]); } n.setStyle(inboxStyle);
 					 */
 					NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-					notificationManager.notify(001, n.build());
+					notificationManager.notify(001, builder.build());
 				}
 			}
 		}, new Response.ErrorListener() {

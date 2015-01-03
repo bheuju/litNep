@@ -169,7 +169,7 @@ public class UpdateActivity extends ActionBarActivity {
 		i.setAction(Intent.ACTION_VIEW);
 		i.setDataAndType(Uri.fromFile(new File(path)),
 				"application/vnd.android.package-archive");
-		Log.e("Installing", "About to install new .apk from " + path);
+		//Log.e("Installing", "About to install new .apk from " + path);
 		startActivity(i);
 	}
 
@@ -186,7 +186,7 @@ public class UpdateActivity extends ActionBarActivity {
 					new Response.Listener<String>() {
 						@Override
 						public void onResponse(String response) {
-							Log.d("Response: ", response);
+							//Log.d("Response: ", response);
 
 							int newVersionCode = Integer.parseInt(response);
 
@@ -250,20 +250,22 @@ public class UpdateActivity extends ActionBarActivity {
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.update, menu);
+		getMenuInflater().inflate(R.menu.account, menu);
 		return true;
 	}
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		// Handle action bar item clicks here. The action bar will
-		// automatically handle clicks on the Home/Up button, so long
-		// as you specify a parent activity in AndroidManifest.xml.
-		int id = item.getItemId();
-		if (id == R.id.action_settings) {
+		switch (item.getItemId()) {
+		case R.id.action_settings:
+			openSettings();
 			return true;
+		default:
+			return super.onOptionsItemSelected(item);
 		}
-		return super.onOptionsItemSelected(item);
+	}
+
+	private void openSettings() {
+		startActivity(new Intent(this, Prefs.class));
 	}
 }

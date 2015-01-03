@@ -91,6 +91,8 @@ public class FragmentTab2 extends Fragment {
 
 	private View loadMoreView;
 
+	private TextView tvNoData;
+
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
@@ -99,7 +101,9 @@ public class FragmentTab2 extends Fragment {
 		list = (ListView) v.findViewById(R.id.listPosts);
 		noConMsg = (LinearLayout) v.findViewById(R.id.noConMsg);
 		btnTryAgain = (Button) v.findViewById(R.id.btnTryAgain);
+		tvNoData = (TextView) v.findViewById(R.id.tvNoData);
 
+		tvNoData.setVisibility(View.GONE);
 		noConMsg.setVisibility(View.GONE);
 
 		pDialog = new ProgressDialog(getActivity());
@@ -139,7 +143,7 @@ public class FragmentTab2 extends Fragment {
 				singlePostActivity.putExtra("post_id", post.getPostId());
 				singlePostActivity.putExtra("user_id", post.getUserId());
 				singlePostActivity.putExtra("like_value", post.getLikeValue());
-				
+
 				startActivity(singlePostActivity);
 			}
 
@@ -154,18 +158,18 @@ public class FragmentTab2 extends Fragment {
 				if ((lastInScreen == totalItemCount) && !(loadingMore)) {
 					// End of listView reached
 					// display loading more
-					Log.e("Loading..", "End reached... " + maxPost + " And "
-							+ (start + count));
+					// Log.e("Loading..", "End reached... " + maxPost + " And "
+					// + (start + count));
 					loadingMore = true;
 
 					// prevent loadMore when nothing left to load
-					if (maxPost >= (start + count)) {
+					if ((maxPost >= (start + count)) && (start == 0)) {
 						// Load more
 						start += count;
 						jsonArrRequest();
 					} else {
 						// No more to load
-						list.removeFooterView(loadMoreView);
+						// list.removeFooterView(loadMoreView);
 					}
 
 				}
@@ -223,16 +227,16 @@ public class FragmentTab2 extends Fragment {
 
 			// if the (logged-in user) is (owner of the post) then provide
 			// permission to delete or edit
-			if (act.getUserId() == userId) {
-				Log.e("Testing long press:", "Validation Success");
+			if ((act.getUserId() == userId) && MainActivity.isLoggedIn) {
+				// Log.e("Testing long press:", "Validation Success");
 				// menu.findItem(0).setVisible(false);
 				menuItems.set(0, "Edit");
 				menuItems.set(1, "Delete");
 				edit = true;
 				delete = true;
 			} else {
-				Log.e("Testing long press:", act.getUserId() + " User IDs "
-						+ userId);
+				// Log.e("Testing long press:", act.getUserId() + " User IDs "
+				// + userId);
 				menuItems.set(0, "Share");
 				edit = false;
 				delete = false;
@@ -286,11 +290,11 @@ public class FragmentTab2 extends Fragment {
 		edit.putExtra("title", title);
 		edit.putExtra("content", content);
 
-		Log.d("SENT", "SENT");
-		Log.d("post_id", "" + postId);
-		Log.d("userid", "" + userId);
-		Log.d("title", title);
-		Log.d("content", content);
+		// Log.d("SENT", "SENT");
+		// Log.d("post_id", "" + postId);
+		// Log.d("userid", "" + userId);
+		// Log.d("title", title);
+		// Log.d("content", content);
 
 		startActivity(edit);
 	}
@@ -300,13 +304,14 @@ public class FragmentTab2 extends Fragment {
 
 		userId = act.getUserId();
 
-		Log.e("Check Delete data", "UserID: " + userId + ", post_id: " + postId);
+		// Log.e("Check Delete data", "UserID: " + userId + ", post_id: " +
+		// postId);
 
 		StringRequest req = new StringRequest(Method.POST, urlDelete,
 				new Response.Listener<String>() {
 					@Override
 					public void onResponse(String response) {
-						Log.d("Response: ", response.toString());
+						// Log.d("Response: ", response.toString());
 
 						GeneralFunctions.getInstance().toast(getActivity(),
 								"Deleted Successfully");
@@ -370,50 +375,60 @@ public class FragmentTab2 extends Fragment {
 				new Response.Listener<JSONArray>() {
 					@Override
 					public void onResponse(JSONArray response) {
-						Log.d(TAG, response.toString());
-						try {
-							// parsing json array response
-							// loop through each json object
-							for (int i = 0; i < response.length(); i++) {
-								JSONObject obj = (JSONObject) response.get(i);
+						// Log.d(TAG, response.toString());
+						if (response.toString().equals("[]")) {
+							tvNoData.setVisibility(View.VISIBLE);
+							hidepDialog();
+						} else {
+							try {
+								// parsing json array response
+								// loop through each json object
+								for (int i = 0; i < response.length(); i++) {
+									JSONObject obj = (JSONObject) response
+											.get(i);
 
-								Post post = new Post();
-								post.setPostId(obj.getInt("post_id"));
-								post.setUserId(obj.getInt("user_id"));
-								post.setfirstName(obj.getString("firstName"));
-								post.setlastName(obj.getString("lastName"));
-								post.setThumbnailUrl(obj
-										.getString("thumbnailUrl"));
-								post.setTitle(obj.getString("title"));
-								post.setContent(obj.getString("content"));
-								post.setCreatedAt(obj.getString("created_at"));
-								post.setLikeValue(obj.getInt("like_value"));
+									Post post = new Post();
+									post.setPostId(obj.getInt("post_id"));
+									post.setUserId(obj.getInt("user_id"));
+									post.setfirstName(obj
+											.getString("firstName"));
+									post.setlastName(obj.getString("lastName"));
+									post.setThumbnailUrl(obj
+											.getString("thumbnailUrl"));
+									post.setTitle(obj.getString("title"));
+									post.setContent(obj.getString("content"));
+									post.setCreatedAt(obj
+											.getString("created_at"));
+									post.setLikeValue(obj.getInt("like_value"));
 
-								mContentsList.add(post);
-								maxPost++;
+									mContentsList.add(post);
+									maxPost++;
+								}
+								dataAdapter.notifyDataSetChanged();
+								// show progressDialog on first run only
+								if (!firstRun) {
+									// GeneralFunctions.getInstance().toast(
+									// getActivity(), "Success");
+								}
+								firstRun = false;
+								loadingMore = false;
+							} catch (JSONException e) {
+								// e.printStackTrace();
+								GeneralFunctions.getInstance().toast(
+										getActivity(),
+										"Error: " + e.getMessage());
 							}
-							dataAdapter.notifyDataSetChanged();
-							// show progressDialog on first run only
-							if (!firstRun) {
-								// GeneralFunctions.getInstance().toast(
-								// getActivity(), "Success");
-							}
-							firstRun = false;
-							loadingMore = false;
-						} catch (JSONException e) {
-							e.printStackTrace();
-							GeneralFunctions.getInstance().toast(getActivity(),
-									"Error: " + e.getMessage());
+							noConMsg.setVisibility(View.GONE);
+							tvNoData.setVisibility(View.GONE);
+							hidepDialog();
 						}
-						noConMsg.setVisibility(View.GONE);
-						hidepDialog();
 					};
 				}, new Response.ErrorListener() {
 
 					@Override
 					public void onErrorResponse(VolleyError error) {
 						// TODO Auto-generated method stub
-						VolleyLog.d(TAG, "Error: " + error.getMessage());
+						// VolleyLog.d(TAG, "Error: " + error.getMessage());
 						// GeneralFunctions.getInstance().toast(getActivity(),
 						// error.getMessage());
 						if (error instanceof NoConnectionError) {

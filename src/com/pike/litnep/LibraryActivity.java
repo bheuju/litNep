@@ -14,7 +14,7 @@ public class LibraryActivity extends ActionBarActivity {
 
 	private ListView mLibraryList;
 	private ArrayAdapter<String> arrayList;
-	private String[] mLibraryListItems = { "Reviews", "Books", "Shop" };
+	private String[] mLibraryListItems = { "Books" };
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -47,23 +47,26 @@ public class LibraryActivity extends ActionBarActivity {
 		// TODO:
 		switch (position) {
 		case 0:
-			openReviews();
-			break;
-		case 1:
 			openBooks();
 			break;
-		case 2:
-			openShop();
-			break;
+		// case 1:
+		// openReviews();
+		// break;
+
+		// case 2:
+		// openShop();
+		// break;
 		}
 	}
 
 	private void openReviews() {
 		startActivity(new Intent(this, ReviewsActivity.class));
 	}
+
 	private void openBooks() {
 		startActivity(new Intent(this, BooksActivity.class));
 	}
+
 	private void openShop() {
 		startActivity(new Intent(this, ShopActivity.class));
 	}
@@ -73,20 +76,22 @@ public class LibraryActivity extends ActionBarActivity {
 	 ***********************/
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.library, menu);
+		getMenuInflater().inflate(R.menu.account, menu);
 		return true;
 	}
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		// Handle action bar item clicks here. The action bar will
-		// automatically handle clicks on the Home/Up button, so long
-		// as you specify a parent activity in AndroidManifest.xml.
-		int id = item.getItemId();
-		if (id == R.id.action_settings) {
+		switch (item.getItemId()) {
+		case R.id.action_settings:
+			openSettings();
 			return true;
+		default:
+			return super.onOptionsItemSelected(item);
 		}
-		return super.onOptionsItemSelected(item);
+	}
+
+	private void openSettings() {
+		startActivity(new Intent(this, Prefs.class));
 	}
 }

@@ -14,6 +14,7 @@ import com.pike.litnep.app.AppController;
 
 import android.support.v7.app.ActionBarActivity;
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -74,21 +75,23 @@ public class ReviewsActivity extends ActionBarActivity {
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.reviews, menu);
+		getMenuInflater().inflate(R.menu.account, menu);
 		return true;
 	}
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		// Handle action bar item clicks here. The action bar will
-		// automatically handle clicks on the Home/Up button, so long
-		// as you specify a parent activity in AndroidManifest.xml.
-		int id = item.getItemId();
-		if (id == R.id.action_settings) {
+		switch (item.getItemId()) {
+		case R.id.action_settings:
+			openSettings();
 			return true;
+		default:
+			return super.onOptionsItemSelected(item);
 		}
-		return super.onOptionsItemSelected(item);
+	}
+
+	private void openSettings() {
+		startActivity(new Intent(this, Prefs.class));
 	}
 
 	/**
@@ -101,7 +104,7 @@ public class ReviewsActivity extends ActionBarActivity {
 				null, new Response.Listener<JSONObject>() {
 					@Override
 					public void onResponse(JSONObject response) {
-						Log.d(TAG, response.toString());
+						//Log.d(TAG, response.toString());
 						try {
 							// parsing json obj response
 							// response will be a json object
@@ -125,7 +128,7 @@ public class ReviewsActivity extends ActionBarActivity {
 					@Override
 					public void onErrorResponse(VolleyError error) {
 						// TODO Auto-generated method stub
-						VolleyLog.d(TAG, "Error: " + error.getMessage());
+						//VolleyLog.d(TAG, "Error: " + error.getMessage());
 						//GeneralFunctions.getInstance().toast(context, error.getMessage());
 						hidepDialog();
 					}
@@ -143,7 +146,7 @@ public class ReviewsActivity extends ActionBarActivity {
 				new Response.Listener<JSONArray>() {
 					@Override
 					public void onResponse(JSONArray response) {
-						Log.d(TAG, response.toString());
+						//Log.d(TAG, response.toString());
 						try {
 							// parsing json array response
 							// loop through each json object
@@ -171,7 +174,7 @@ public class ReviewsActivity extends ActionBarActivity {
 					@Override
 					public void onErrorResponse(VolleyError error) {
 						// TODO Auto-generated method stub
-						VolleyLog.d(TAG, "Error: " + error.getMessage());
+						//VolleyLog.d(TAG, "Error: " + error.getMessage());
 						//GeneralFunctions.getInstance().toast(context, error.getMessage());
 						hidepDialog();
 					}

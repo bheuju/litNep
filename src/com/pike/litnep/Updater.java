@@ -36,7 +36,7 @@ public class Updater extends IntentService {
 			root.mkdirs(); // create directory it may not exist
 
 			File output = new File(root, intent.getData().getLastPathSegment());
-			Log.e("Testing output file path", output.getPath());
+			//Log.e("Testing output file path", output.getPath());
 
 			URL url = new URL(intent.getData().toString());
 			HttpURLConnection c = (HttpURLConnection) url.openConnection();
@@ -57,8 +57,8 @@ public class Updater extends IntentService {
 
 			int fileLength = c.getContentLength() + downloadedSize;
 
-			Log.e("Download File Size", "DL: " + downloadedSize + " TL:"
-					+ fileLength);
+			//Log.e("Download File Size", "DL: " + downloadedSize + " TL:"
+			//		+ fileLength);
 
 			// FileOutputStream fos = new FileOutputStream(output.getPath());
 			// BufferedOutputStream out = new BufferedOutputStream(fos);
@@ -79,17 +79,17 @@ public class Updater extends IntentService {
 					downloadedSize += len;
 					UpdateActivity
 							.publishProgress((int) ((downloadedSize / (float) (fileLength)) * 100));
-					Log.e("Downloaded", "Total: " + fileLength
-							+ ", Downloaded: " + downloadedSize
-							+ ", Remaining: " + (fileLength - downloadedSize));
+					//Log.e("Downloaded", "Total: " + fileLength
+					//		+ ", Downloaded: " + downloadedSize
+					//		+ ", Remaining: " + (fileLength - downloadedSize));
 				}
 				out.flush();
 			} finally {
 				fos.getFD().sync();
 				out.close();
 			}
-			Log.e("Updater Service", "Download complete...");
-			Log.e("Updater Service", "" + "-1");
+			//Log.e("Updater Service", "Download complete...");
+			//Log.e("Updater Service", "" + "-1");
 
 			if (downloadedSize != fileLength) {
 				act.setError("Connection failed...");
@@ -100,7 +100,7 @@ public class Updater extends IntentService {
 			sendBroadcast(new Intent(ACTION_COMPLETE));
 
 		} catch (IOException e2) {
-			Log.e(getClass().getName(), "Exception in download", e2);
+			//Log.e(getClass().getName(), "Exception in download", e2);
 			act.setError("Connection timeout...");
 			sendBroadcast(new Intent(ACTION_COMPLETE));
 		}

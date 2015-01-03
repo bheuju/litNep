@@ -17,6 +17,7 @@ import com.pike.litnep.model.Books;
 import com.pike.litnep.util.GeneralFunctions;
 
 import android.support.v7.app.ActionBarActivity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -68,7 +69,6 @@ public class BooksActivity extends ActionBarActivity {
 				Books book = (Books) dataAdapter.getItem(position);
 				GeneralFunctions.getInstance().toast(getApplicationContext(),
 						book.getTitle());
-
 			}
 
 		});
@@ -77,21 +77,23 @@ public class BooksActivity extends ActionBarActivity {
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.books, menu);
+		getMenuInflater().inflate(R.menu.account, menu);
 		return true;
 	}
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		// Handle action bar item clicks here. The action bar will
-		// automatically handle clicks on the Home/Up button, so long
-		// as you specify a parent activity in AndroidManifest.xml.
-		int id = item.getItemId();
-		if (id == R.id.action_settings) {
+		switch (item.getItemId()) {
+		case R.id.action_settings:
+			openSettings();
 			return true;
+		default:
+			return super.onOptionsItemSelected(item);
 		}
-		return super.onOptionsItemSelected(item);
+	}
+
+	private void openSettings() {
+		startActivity(new Intent(this, Prefs.class));
 	}
 
 	private void setUrl() {
@@ -113,7 +115,7 @@ public class BooksActivity extends ActionBarActivity {
 				new Response.Listener<JSONArray>() {
 					@Override
 					public void onResponse(JSONArray response) {
-						Log.d(TAG, response.toString());
+						//Log.d(TAG, response.toString());
 						// setContentView(R.layout.activity_books);
 						try {
 							// parsing json array response
@@ -153,7 +155,7 @@ public class BooksActivity extends ActionBarActivity {
 					@Override
 					public void onErrorResponse(VolleyError error) {
 						// TODO Auto-generated method stub
-						VolleyLog.e(TAG, "Error: " + error.getMessage());
+						//VolleyLog.e(TAG, "Error: " + error.getMessage());
 						// GeneralFunctions.getInstance().toast(getActivity(),
 						// error.getMessage());
 						if (error instanceof NoConnectionError) {

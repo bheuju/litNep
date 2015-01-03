@@ -12,6 +12,7 @@ import com.pike.litnep.app.AppController;
 import com.pike.litnep.util.GeneralFunctions;
 
 import android.support.v7.app.ActionBarActivity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -71,7 +72,7 @@ public class FeedbackActivity extends ActionBarActivity {
 				new Response.Listener<String>() {
 					@Override
 					public void onResponse(String response) {
-						Log.d("Response: ", response.toString());
+						//Log.d("Response: ", response.toString());
 
 						GeneralFunctions.getInstance().toast(
 								getApplicationContext(),
@@ -105,20 +106,22 @@ public class FeedbackActivity extends ActionBarActivity {
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.feedback, menu);
+		getMenuInflater().inflate(R.menu.account, menu);
 		return true;
 	}
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		// Handle action bar item clicks here. The action bar will
-		// automatically handle clicks on the Home/Up button, so long
-		// as you specify a parent activity in AndroidManifest.xml.
-		int id = item.getItemId();
-		if (id == R.id.action_settings) {
+		switch (item.getItemId()) {
+		case R.id.action_settings:
+			openSettings();
 			return true;
+		default:
+			return super.onOptionsItemSelected(item);
 		}
-		return super.onOptionsItemSelected(item);
+	}
+
+	private void openSettings() {
+		startActivity(new Intent(this, Prefs.class));
 	}
 }

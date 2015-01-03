@@ -17,6 +17,7 @@ import com.pike.litnep.app.AppController;
 import com.pike.litnep.util.GeneralFunctions;
 
 import android.support.v7.app.ActionBarActivity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -35,9 +36,9 @@ public class SinglePage extends ActionBarActivity {
 	private String url = "http://pike.comlu.com/extra/incLike.php";
 
 	private int postId;
-	private int likeValue;
+	private int likeValue = 0;
 
-	private static boolean liked = false;
+	// private static boolean liked = false;
 
 	private static String TAG = MainActivity.class.getSimpleName();
 
@@ -76,7 +77,7 @@ public class SinglePage extends ActionBarActivity {
 
 		tvLikeValue.setText((likeValue != 0) ? String.valueOf(likeValue) : "");
 
-		btnLike.setEnabled(MainActivity.isLoggedIn && !liked);
+		btnLike.setEnabled(MainActivity.isLoggedIn);
 
 		btnLike.setOnClickListener(new View.OnClickListener() {
 
@@ -91,21 +92,23 @@ public class SinglePage extends ActionBarActivity {
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.single_page, menu);
+		getMenuInflater().inflate(R.menu.account, menu);
 		return true;
 	}
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		// Handle action bar item clicks here. The action bar will
-		// automatically handle clicks on the Home/Up button, so long
-		// as you specify a parent activity in AndroidManifest.xml.
-		int id = item.getItemId();
-		if (id == R.id.action_settings) {
+		switch (item.getItemId()) {
+		case R.id.action_settings:
+			openSettings();
 			return true;
+		default:
+			return super.onOptionsItemSelected(item);
 		}
-		return super.onOptionsItemSelected(item);
+	}
+
+	private void openSettings() {
+		startActivity(new Intent(this, Prefs.class));
 	}
 
 	/**
@@ -116,13 +119,13 @@ public class SinglePage extends ActionBarActivity {
 				new Response.Listener<String>() {
 					@Override
 					public void onResponse(String response) {
-						Log.d("Response: ", response.toString());
+						//Log.d("Response: ", response.toString());
 
 						GeneralFunctions.getInstance().toast(
 								getApplicationContext(), "Success");
 						likeValue++;
 						tvLikeValue.setText(String.valueOf(likeValue));
-						liked = true;
+						// liked = true;
 						btnLike.setEnabled(false);
 					}
 				}, new Response.ErrorListener() {
@@ -143,11 +146,11 @@ public class SinglePage extends ActionBarActivity {
 				Map<String, String> params = new HashMap<String, String>();
 				params.put("post_id", String.valueOf(postId));
 				params.put("like_value", String.valueOf(likeValue));
+				//Log.e("DATA", "postid: " + postId + " likevalue:" + likeValue);
 				return params;
 			}
 		};
 		// add to request queue
 		AppController.getInstance().addToRequestQueue(req);
 	}
-
 }
