@@ -77,7 +77,7 @@ public class BooksActivity extends ActionBarActivity {
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		getMenuInflater().inflate(R.menu.account, menu);
+		getMenuInflater().inflate(R.menu.books, menu);
 		return true;
 	}
 
@@ -115,7 +115,7 @@ public class BooksActivity extends ActionBarActivity {
 				new Response.Listener<JSONArray>() {
 					@Override
 					public void onResponse(JSONArray response) {
-						//Log.d(TAG, response.toString());
+						// Log.d(TAG, response.toString());
 						// setContentView(R.layout.activity_books);
 						try {
 							// parsing json array response
@@ -155,7 +155,7 @@ public class BooksActivity extends ActionBarActivity {
 					@Override
 					public void onErrorResponse(VolleyError error) {
 						// TODO Auto-generated method stub
-						//VolleyLog.e(TAG, "Error: " + error.getMessage());
+						// VolleyLog.e(TAG, "Error: " + error.getMessage());
 						// GeneralFunctions.getInstance().toast(getActivity(),
 						// error.getMessage());
 						if (error instanceof NoConnectionError) {

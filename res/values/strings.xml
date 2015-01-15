@@ -38,5 +38,8 @@
     <string name="title_activity_user_profile">Profile</string>
     <string name="title_activity_prefs">Preferences</string>
     <string name="title_activity_notification_receiver">Notification</string>
+    <string name="title_activity_uploader">Uploader</string>
+    <string name="title_activity_image_uploader">Upload Image</string>
+    <string name="title_activity_edit_account">Edit</string>
 
 </resources>

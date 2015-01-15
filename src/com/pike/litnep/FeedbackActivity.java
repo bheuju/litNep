@@ -72,7 +72,7 @@ public class FeedbackActivity extends ActionBarActivity {
 				new Response.Listener<String>() {
 					@Override
 					public void onResponse(String response) {
-						//Log.d("Response: ", response.toString());
+						// Log.d("Response: ", response.toString());
 
 						GeneralFunctions.getInstance().toast(
 								getApplicationContext(),
@@ -106,7 +106,7 @@ public class FeedbackActivity extends ActionBarActivity {
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		getMenuInflater().inflate(R.menu.account, menu);
+		getMenuInflater().inflate(R.menu.feedback, menu);
 		return true;
 	}
 

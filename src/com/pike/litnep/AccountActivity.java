@@ -1,5 +1,8 @@
 package com.pike.litnep;
 
+import com.android.volley.toolbox.ImageLoader;
+import com.android.volley.toolbox.NetworkImageView;
+import com.pike.litnep.app.AppController;
 import com.pike.litnep.model.User;
 import com.pike.litnep.util.GeneralFunctions;
 
@@ -16,8 +19,9 @@ import android.widget.TextView;
 public class AccountActivity extends ActionBarActivity {
 
 	private ImageButton btnImage;
+	private NetworkImageView imgUser;
 	private TextView tvName, tvEmail, tvPhone, tvAddress;
-	private Button btnPass;
+	ImageLoader imageLoader = AppController.getInstance().getImageLoader();
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -25,7 +29,7 @@ public class AccountActivity extends ActionBarActivity {
 		setContentView(R.layout.activity_account);
 
 		btnImage = (ImageButton) findViewById(R.id.btnImage);
-		btnPass = (Button) findViewById(R.id.btnPass);
+		imgUser = (NetworkImageView) findViewById(R.id.imgUser);
 
 		tvName = (TextView) findViewById(R.id.tvName);
 		tvEmail = (TextView) findViewById(R.id.tvEmail);
@@ -44,6 +48,17 @@ public class AccountActivity extends ActionBarActivity {
 			tvAddress.setVisibility(View.GONE);
 		}
 
+		imgUser.setImageUrl(User.getInstance().getImgUrl(), imageLoader);
+
+		btnImage.setOnClickListener(new View.OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				startActivity(new Intent(getApplicationContext(),
+						ImageUploader.class));
+			}
+		});
+
 	}
 
 	@Override
@@ -55,12 +70,20 @@ public class AccountActivity extends ActionBarActivity {
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
+		case R.id.action_edit:
+			openEditAccount();
+			return true;
 		case R.id.action_settings:
 			openSettings();
 			return true;
 		default:
 			return super.onOptionsItemSelected(item);
 		}
+	}
+
+	private void openEditAccount() {
+		Intent editAccount = new Intent(this, EditAccount.class);
+		startActivity(editAccount);
 	}
 
 	private void openSettings() {

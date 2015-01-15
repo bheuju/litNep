@@ -6,6 +6,8 @@ public class User {
 
 	private int userId;
 
+	private String imgUrl;
+	private String thumbnailUrl;
 	private String firstName;
 	private String lastName;
 	private String email;
@@ -23,6 +25,8 @@ public class User {
 
 	private User() {
 		this.loggedStatus = false;
+		this.imgUrl = "";
+		this.thumbnailUrl = "";
 		this.userId = 0;
 		this.firstName = "";
 		this.lastName = "";
@@ -31,7 +35,7 @@ public class User {
 	}
 
 	public void setUser(int userId, String firstName, String lastName,
-			String email, String phone, String address) {
+			String email, String phone, String address, String imgUrl, String thumbnailUrl) {
 		this.loggedStatus = true;
 		this.userId = userId;
 		this.firstName = firstName;
@@ -39,6 +43,8 @@ public class User {
 		this.email = email;
 		this.phone = phone;
 		this.address = address;
+		this.imgUrl = imgUrl;
+		this.thumbnailUrl = thumbnailUrl;
 	}
 
 	/**
@@ -46,6 +52,14 @@ public class User {
 	 */
 	public void setLoggedStatus(boolean loggedStatus) {
 		this.loggedStatus = loggedStatus;
+	}
+
+	public void setImgUrl(String imgUrl) {
+		this.imgUrl = imgUrl;
+	}
+
+	public void setThumbnailUrl(String thumbnailUrl) {
+		this.thumbnailUrl = thumbnailUrl;
 	}
 
 	public void setUserId(int userId) {
@@ -77,6 +91,14 @@ public class User {
 	 */
 	public boolean getLoggedStatus() {
 		return loggedStatus;
+	}
+
+	public String getImgUrl() {
+		return imgUrl;
+	}
+
+	public String getThumbnailUrl() {
+		return thumbnailUrl;
 	}
 
 	public int getUserId() {

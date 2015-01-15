@@ -169,7 +169,7 @@ public class UpdateActivity extends ActionBarActivity {
 		i.setAction(Intent.ACTION_VIEW);
 		i.setDataAndType(Uri.fromFile(new File(path)),
 				"application/vnd.android.package-archive");
-		//Log.e("Installing", "About to install new .apk from " + path);
+		// Log.e("Installing", "About to install new .apk from " + path);
 		startActivity(i);
 	}
 
@@ -186,7 +186,7 @@ public class UpdateActivity extends ActionBarActivity {
 					new Response.Listener<String>() {
 						@Override
 						public void onResponse(String response) {
-							//Log.d("Response: ", response);
+							// Log.d("Response: ", response);
 
 							int newVersionCode = Integer.parseInt(response);
 
@@ -250,7 +250,7 @@ public class UpdateActivity extends ActionBarActivity {
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		getMenuInflater().inflate(R.menu.account, menu);
+		getMenuInflater().inflate(R.menu.update, menu);
 		return true;
 	}
 

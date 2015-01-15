@@ -78,7 +78,7 @@ public class NotificationReceiver extends ActionBarActivity {
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		getMenuInflater().inflate(R.menu.account, menu);
+		getMenuInflater().inflate(R.menu.notification_receiver, menu);
 		return true;
 	}
 

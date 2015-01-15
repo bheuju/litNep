@@ -14,7 +14,7 @@ public class LibraryActivity extends ActionBarActivity {
 
 	private ListView mLibraryList;
 	private ArrayAdapter<String> arrayList;
-	private String[] mLibraryListItems = { "Books" };
+	private String[] mLibraryListItems = { "Books", "Uploader" };
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -49,18 +49,19 @@ public class LibraryActivity extends ActionBarActivity {
 		case 0:
 			openBooks();
 			break;
-		// case 1:
+		case 1:
+			openShop();
+			break;
+
+		// case 2:
 		// openReviews();
 		// break;
 
-		// case 2:
-		// openShop();
-		// break;
 		}
 	}
 
 	private void openReviews() {
-		startActivity(new Intent(this, ReviewsActivity.class));
+		startActivity(new Intent(this, ImageUploader.class));
 	}
 
 	private void openBooks() {
@@ -68,7 +69,7 @@ public class LibraryActivity extends ActionBarActivity {
 	}
 
 	private void openShop() {
-		startActivity(new Intent(this, ShopActivity.class));
+		startActivity(new Intent(this, ImageUploader.class));
 	}
 
 	/**
@@ -76,7 +77,7 @@ public class LibraryActivity extends ActionBarActivity {
 	 ***********************/
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		getMenuInflater().inflate(R.menu.account, menu);
+		getMenuInflater().inflate(R.menu.library, menu);
 		return true;
 	}
 

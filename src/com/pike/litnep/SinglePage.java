@@ -92,7 +92,7 @@ public class SinglePage extends ActionBarActivity {
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		getMenuInflater().inflate(R.menu.account, menu);
+		getMenuInflater().inflate(R.menu.single_page, menu);
 		return true;
 	}
 

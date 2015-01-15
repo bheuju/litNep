@@ -75,7 +75,7 @@ public class ReviewsActivity extends ActionBarActivity {
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		getMenuInflater().inflate(R.menu.account, menu);
+		getMenuInflater().inflate(R.menu.reviews, menu);
 		return true;
 	}
 

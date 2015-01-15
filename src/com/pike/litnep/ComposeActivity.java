@@ -81,6 +81,7 @@ public class ComposeActivity extends ActionBarActivity {
 			@Override
 			public void onClick(View v) {
 				// get title and contents
+				btnPost.setEnabled(false);
 				title = etTitle.getText().toString();
 				content = etContent.getText().toString();
 				if (validateInput()) {
@@ -96,7 +97,7 @@ public class ComposeActivity extends ActionBarActivity {
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		getMenuInflater().inflate(R.menu.account, menu);
+		getMenuInflater().inflate(R.menu.compose, menu);
 		return true;
 	}
 
@@ -114,6 +115,7 @@ public class ComposeActivity extends ActionBarActivity {
 	private void openSettings() {
 		startActivity(new Intent(this, Prefs.class));
 	}
+
 	/**
 	 * General Functions
 	 */
@@ -136,7 +138,7 @@ public class ComposeActivity extends ActionBarActivity {
 				new Response.Listener<String>() {
 					@Override
 					public void onResponse(String response) {
-						//Log.d("Response: ", response.toString());
+						// Log.d("Response: ", response.toString());
 
 						GeneralFunctions.getInstance().toast(
 								getApplicationContext(), "Success");
@@ -185,7 +187,7 @@ public class ComposeActivity extends ActionBarActivity {
 				new Response.Listener<String>() {
 					@Override
 					public void onResponse(String response) {
-						//Log.d("Response: ", response.toString());
+						// Log.d("Response: ", response.toString());
 
 						GeneralFunctions.getInstance().toast(
 								getApplicationContext(), "Success");

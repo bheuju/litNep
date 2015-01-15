@@ -48,11 +48,13 @@ public class SigninActivity extends ActionBarActivity {
 	private static String KEY_LASTNAME = "lastName";
 	private static String KEY_EMAIL = "email";
 	private static String KEY_CREATED_AT = "created_at";
+	private static String KEY_THUMBNAILURL = "thumbnailUrl";
+	private static String KEY_IMGURL = "imgUrl";
 
 	private ProgressDialog pDialog;
 	private JSONObject jsonObj;
 
-	private static String url = "http://pike.comlu.com/users/";
+	private static String url = "http://pike.comlu.com/v1.0.1/src/users/";
 	private String urlReset = "http://pike.comlu.com/extra/reset.php";
 
 	private static String TAG = MainActivity.class.getSimpleName();
@@ -82,8 +84,8 @@ public class SigninActivity extends ActionBarActivity {
 				email = etEmail.getText().toString();
 				password = etPass.getText().toString();
 
-				//Log.d("Log In", email);
-				//Log.d("Log In", password);
+				// Log.d("Log In", email);
+				// Log.d("Log In", password);
 
 				if (validateInput()) {
 					// try to login
@@ -125,7 +127,7 @@ public class SigninActivity extends ActionBarActivity {
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		getMenuInflater().inflate(R.menu.account, menu);
+		getMenuInflater().inflate(R.menu.signin, menu);
 		return true;
 	}
 
@@ -173,17 +175,17 @@ public class SigninActivity extends ActionBarActivity {
 				new Response.Listener<String>() {
 					@Override
 					public void onResponse(String response) {
-						//Log.d("JSON Parser: ", response.toString());
+						// Log.d("JSON Parser: ", response.toString());
 						String jsonString = response.toString();
 
 						try {
 							jsonObj = new JSONObject(jsonString);
-							//Log.d("JSON =>", jsonObj.toString());
+							// Log.d("JSON =>", jsonObj.toString());
 
 						} catch (Throwable t) {
-							//Log.e("JSON =>",
-							//		"Could not parse malformed JSON: \""
-							//				+ jsonString + "\"");
+							// Log.e("JSON =>",
+							// "Could not parse malformed JSON: \""
+							// + jsonString + "\"");
 						}
 						hidepDialog();
 						// call callback
@@ -192,7 +194,7 @@ public class SigninActivity extends ActionBarActivity {
 				}, new Response.ErrorListener() {
 					@Override
 					public void onErrorResponse(VolleyError error) {
-						//VolleyLog.d(TAG, "Error: " + error.getMessage());
+						// VolleyLog.d(TAG, "Error: " + error.getMessage());
 						// GeneralFunctions.getInstance().toast(getApplicationContext(),
 						// error.toString());
 						hidepDialog();
@@ -212,7 +214,7 @@ public class SigninActivity extends ActionBarActivity {
 
 	public void checkLoginResponse(JSONObject json) {
 		// check login response
-		//Log.d("Response After sign in: ", json.toString());
+		// Log.d("Response After sign in: ", json.toString());
 		try {
 			if (json.getString(KEY_SUCCESS) != null) {
 				tvLoginError.setText("");
@@ -226,18 +228,22 @@ public class SigninActivity extends ActionBarActivity {
 							getApplicationContext(), "Log In, Successful");
 					Intent mainActivity = new Intent(getApplicationContext(),
 							MainActivity.class);
+
 					mainActivity.putExtra("login", true);
 					mainActivity.putExtra("userId", json.getInt(KEY_ID));
 					mainActivity.putExtra("firstName",
 							json.getString(KEY_FIRSTNAME));
 					mainActivity.putExtra("lastName",
 							json.getString(KEY_LASTNAME));
+
 					mainActivity.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 					startActivity(mainActivity);
 
 					User.getInstance().setUser(json.getInt(KEY_ID),
 							json.getString(KEY_FIRSTNAME),
-							json.getString(KEY_LASTNAME), email, "", "");
+							json.getString(KEY_LASTNAME), email, "", "",
+							json.getString(KEY_IMGURL),
+							json.getString(KEY_THUMBNAILURL));
 
 					// close signinActivity
 					finish();
@@ -256,7 +262,7 @@ public class SigninActivity extends ActionBarActivity {
 				new Response.Listener<String>() {
 					@Override
 					public void onResponse(String response) {
-						//Log.d("Response: ", response.toString());
+						// Log.d("Response: ", response.toString());
 
 						GeneralFunctions.getInstance().toast(
 								getApplicationContext(), "Check you email !");

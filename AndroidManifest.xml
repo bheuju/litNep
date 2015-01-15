@@ -11,7 +11,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.VIBRATE"/>
+    <uses-permission android:name="android.permission.VIBRATE" />
 
     <application
         android:name=".app.AppController"
@@ -28,7 +28,7 @@
             android:uiOptions="splitActionBarWhenNarrow" >
             <meta-data
                 android:name="android.support.UI_OPTIONS"
-                android:value="splitActionBarWhenNarrow" />
+                android:value="splitActionBarWhenNarrow" />
             -->
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -114,6 +114,32 @@
         <activity
             android:name=".NotificationReceiver"
             android:label="@string/title_activity_notification_receiver" >
+        </activity>
+        <activity
+            android:name=".Uploader"
+            android:label="@string/title_activity_uploader" >
+        </activity>
+        <activity
+            android:name="com.ipaulpro.afilechooser.FileChooserActivity"
+            android:enabled="true"
+            android:exported="true"
+            android:label="Choose File" >
+            <intent-filter>
+                <action android:name="android.intent.action.GET_CONTENT" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.OPENABLE" />
+
+                <data android:mimeType="*/*" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".ImageUploader"
+            android:label="@string/title_activity_image_uploader" >
+        </activity>
+        <activity
+            android:name=".EditAccount"
+            android:label="@string/title_activity_edit_account" >
         </activity>
     </application>
 
