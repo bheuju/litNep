@@ -33,6 +33,8 @@ import com.android.volley.Request.Method;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
+import com.google.analytics.tracking.android.EasyTracker;
+import com.google.analytics.tracking.android.GoogleAnalytics;
 import com.pike.litnep.adapter.TabsPagerAdapter;
 import com.pike.litnep.app.AppController;
 import com.pike.litnep.util.GeneralFunctions;
@@ -64,15 +66,35 @@ public class MainActivity extends ActionBarActivity implements
 
 	private String urlNotification = "http://pike.comlu.com/notification/";
 
+	//analytics tracker
+	private EasyTracker easyTracker = null;
+	
 	public int getUserId() {
 		return userId;
 	}
 
 	@Override
+	protected void onStart() {
+		// TODO Auto-generated method stub
+		super.onStart();
+		EasyTracker.getInstance(this).activityStart(this);
+	}
+	
+	@Override
+	protected void onStop() {
+		// TODO Auto-generated method stub
+		super.onStop();
+		EasyTracker.getInstance(this).activityStop(this);
+	}
+	
+	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
-
+		
+		easyTracker = EasyTracker.getInstance(MainActivity.this);
+		//GoogleAnalytics analytics = GoogleAnalytics.getInstance(this);
+		
 		Bundle extras = getIntent().getExtras();
 		if (extras != null) {
 			isLoggedIn = extras.getBoolean("login");

@@ -1,5 +1,7 @@
 package com.pike.litnep.app;
 
+import java.util.HashMap;
+
 import android.app.Application;
 import android.text.TextUtils;
 import android.util.Log;
@@ -14,7 +16,6 @@ public class AppController extends Application {
 	/**
 	 * This is a singleton class where all volley core objects are initialized
 	 * */
-
 	public static final String TAG = AppController.class.getSimpleName();
 	private RequestQueue mRequestQueue;
 	private ImageLoader mImageLoader;
